@@ -1,0 +1,15 @@
+baseURL = "https://eevy.in/"
+title = "eevy.in"
+theme = "PaperMod"
+
+[params]
+  description = "Real-world EV insights for India"
+  defaultTheme = "light"
+  ShowReadingTime = true
+  ShowShareButtons = true
+  ShowPostNavLinks = true
+  ShowBreadCrumbs = true
+
+  [params.homeInfoParams]
+  Title = "eevy.in"
+  Content = "Real-world EV insights for India. Practical decisions, not hype."
