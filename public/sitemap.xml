@@ -2,17 +2,17 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
   xmlns:xhtml="http://www.w3.org/1999/xhtml">
   <url>
-    <loc>http://localhost:1313/</loc>
+    <loc>https://eevy.in/</loc>
     <lastmod>2026-04-27T11:08:15+05:30</lastmod>
   </url><url>
-    <loc>http://localhost:1313/posts/</loc>
+    <loc>https://eevy.in/posts/</loc>
     <lastmod>2026-04-27T11:08:15+05:30</lastmod>
   </url><url>
-    <loc>http://localhost:1313/posts/test/</loc>
+    <loc>https://eevy.in/posts/test/</loc>
     <lastmod>2026-04-27T11:08:15+05:30</lastmod>
   </url><url>
-    <loc>http://localhost:1313/categories/</loc>
+    <loc>https://eevy.in/categories/</loc>
   </url><url>
-    <loc>http://localhost:1313/tags/</loc>
+    <loc>https://eevy.in/tags/</loc>
   </url>
 </urlset>
