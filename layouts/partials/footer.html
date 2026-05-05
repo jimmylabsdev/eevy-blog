@@ -1,0 +1,19 @@
+<footer class="site-footer">
+  <div class="container footer-inner">
+    <div class="footer-brand">
+      <!-- <span class="brand-name">eevy<span class="brand-dot">.in</span></span> -->
+      <img src="/images/eevy-logo.png" alt="eevy.in" class="brand-logo">
+      <p class="footer-tagline">Practical EV guidance for Indians.</p>
+    </div>
+
+    <nav class="footer-nav" aria-label="Footer">
+      <ul>
+        {{ range .Site.Menus.main }}
+          <li><a href="{{ .URL | relURL }}">{{ .Name }}</a></li>
+        {{ end }}
+      </ul>
+    </nav>
+
+    <p class="footer-copy">© {{ now.Year }} eevy.in — All rights reserved.</p>
+  </div>
+</footer>

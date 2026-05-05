@@ -1,0 +1,35 @@
+{{ define "main" }}
+<section class="archive">
+  <div class="container">
+    <header class="archive-header">
+      <h1 class="archive-title">{{ .Title }}</h1>
+      {{ with .Description }}<p class="archive-description">{{ . }}</p>{{ end }}
+    </header>
+
+    <div class="post-grid">
+      {{ range .Pages }}
+        {{ $category := "" }}
+        {{ with .Params.categories }}{{ $category = index . 0 }}{{ end }}
+        {{ $thumb := .Params.thumbnail | default "/images/static/post-placeholder.jpg" }}
+        <article class="post-card">
+          <a href="{{ .RelPermalink }}" class="post-card-link">
+            <div class="post-card-body">
+              {{ if $category }}<p class="post-category">{{ $category | upper }}</p>{{ end }}
+              <h3 class="post-title">{{ .Title }}</h3>
+              <p class="post-excerpt">{{ .Params.summary | default (.Summary | plainify | truncate 120) }}</p>
+              <div class="post-meta">
+                <time datetime="{{ .Date.Format "2006-01-02" }}">{{ .Date.Format "Jan 2, 2006" }}</time>
+                <span class="dot">•</span>
+                <span>{{ .ReadingTime }} min read</span>
+              </div>
+            </div>
+            <div class="post-card-thumb">
+              <img src="{{ $thumb | relURL }}" alt="{{ .Title }}" loading="lazy" />
+            </div>
+          </a>
+        </article>
+      {{ end }}
+    </div>
+  </div>
+</section>
+{{ end }}

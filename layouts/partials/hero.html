@@ -1,0 +1,41 @@
+{{ $hero := .Site.Params.hero }}
+<section class="hero">
+  <div class="container hero-grid">
+    <div class="hero-content">
+      <p class="hero-eyebrow">{{ $hero.eyebrow }}</p>
+      <h1 class="hero-title">
+        <span>{{ $hero.titleLine1 }}</span>
+        {{ if $hero.titleLine2 }}
+          <span>{{ $hero.titleLine2 }}</span>
+        {{ end }}
+      </h1>
+      <p class="hero-subtitle">{{ $hero.subtitle }}</p>
+
+      <div class="hero-ctas">
+        <a href="{{ $hero.primaryCtaUrl | relURL }}" class="btn btn-primary">{{ $hero.primaryCtaText }}</a>
+        <a href="{{ $hero.secondaryCtaUrl }}" class="btn btn-outline">{{ $hero.secondaryCtaText }}</a>
+      </div>
+
+      <ul class="hero-features">
+        {{ range .Site.Params.heroFeatures }}
+          <li class="hero-feature">
+            <span class="hero-feature-icon" aria-hidden="true">
+              {{ if eq .icon "rupee" }}
+                <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 3h12"/><path d="M6 8h12"/><path d="M6 13l8.5 8"/><path d="M6 13h3a4.5 4.5 0 0 0 0-9"/></svg>
+              {{ else if eq .icon "plug" }}
+                <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 2v6"/><path d="M15 2v6"/><path d="M6 8h12v3a6 6 0 0 1-6 6 6 6 0 0 1-6-6V8z"/><path d="M12 17v5"/></svg>
+              {{ else if eq .icon "car" }}
+                <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 17H3v-5l2-5h14l2 5v5h-2"/><circle cx="7" cy="17" r="2"/><circle cx="17" cy="17" r="2"/><path d="M5 12h14"/></svg>
+              {{ end }}
+            </span>
+            <span class="hero-feature-label">{{ .label }}</span>
+          </li>
+        {{ end }}
+      </ul>
+    </div>
+
+    <div class="hero-visual">
+      <img src="{{ .Site.Params.heroImage | relURL }}" alt="Electric vehicle charging at a scenic mountain location" loading="eager" />
+    </div>
+  </div>
+</section>

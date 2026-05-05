@@ -1,0 +1,75 @@
+{{ define "main" }}
+<article class="single">
+  <div class="container container--narrow">
+    <!-- <header class="single-header">
+      {{ with .Params.categories }}
+        <p class="post-category">{{ index . 0 | upper }}</p>
+      {{ end }}
+      <h1 class="single-title">{{ .Title }}</h1>
+      <div class="post-meta">
+        <time datetime="{{ .Date.Format "2006-01-02" }}">{{ .Date.Format "Jan 2, 2006" }}</time>
+      </div>
+    </header> -->
+    <header class="single-header">
+
+      {{ with .Params.image }}
+        <div class="hero-image">
+          <img src="{{ . }}" alt="{{ $.Title }}">
+        </div>
+      {{ end }}
+
+      <div class="post-meta">
+        <time datetime="{{ .Date.Format "2006-01-02" }}">{{ .Date.Format "Jan 2, 2006" }}</time>
+      </div>
+
+    </header>
+
+    <div class="single-content">
+
+      {{ if eq .Title "Resources" }}
+      <div class="calculator-card">
+        <h2>EV Cost Calculator</h2>
+    
+        <label>Daily distance (km)</label>
+        <input id="km" type="number" value="30">
+    
+        <label>Petrol price (₹/L)</label>
+        <input id="petrol" type="number" value="100">
+    
+        <label>EV efficiency (km/kWh)</label>
+        <input id="efficiency" type="number" value="40">
+    
+        <label>Electricity cost (₹/kWh)</label>
+        <input id="electricity" type="number" value="8">
+    
+        <label>Extra cost of EV (₹)</label>
+        <input id="evcost" type="number" value="40000">
+    
+        <button onclick="calculateEV()">Calculate</button>
+    
+        <div id="result"></div>
+      </div>
+      {{ end }}
+    
+      {{ .Content }}
+
+      <!-- <script src="https://giscus.app/client.js"
+        data-repo="jimmylabsdev/eevy-comments"
+        data-repo-id="R_kgDOSTzd5g"
+        data-category="[ENTER CATEGORY NAME HERE]"
+        data-category-id="[ENTER CATEGORY ID HERE]"
+        data-mapping="pathname"
+        data-strict="0"
+        data-reactions-enabled="1"
+        data-emit-metadata="0"
+        data-input-position="bottom"
+        data-theme="preferred_color_scheme"
+        data-lang="en"
+        crossorigin="anonymous"
+        async>
+    </script> -->
+    
+    </div>
+  </div>
+</article>
+{{ end }}

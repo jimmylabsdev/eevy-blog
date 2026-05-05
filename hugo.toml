@@ -1,15 +1,67 @@
 baseURL = "https://eevy.in/"
-title = "eevy.in"
-theme = "PaperMod"
+languageCode = "en-in"
+title = "eevy.in — Practical EV guidance for India"
+enableRobotsTXT = true
+enableEmoji = true
+
+[params.label]
+  text = ""
+  icon = "images/eevy-logo.png"
+  iconHeight = 32
 
 [params]
-  description = "Real-world EV insights for India"
-  defaultTheme = "light"
-  ShowReadingTime = true
-  ShowShareButtons = true
-  ShowPostNavLinks = true
-  ShowBreadCrumbs = true
+  description = "Honest blogs, real numbers, and practical advice to help you make smarter EV decisions."
+  tagline = "Real-world EV insights for India"
+  heroImage = "/images/hero-ev.jpg"
+  author = "eevy.in"
 
-  [params.homeInfoParams]
-  Title = "eevy.in"
-  Content = "Real-world EV insights for India. Only practical decisions, not hype."
+[markup]
+  [markup.goldmark.renderer]
+    unsafe = true
+  [markup.highlight]
+    style = "github"
+    lineNos = false
+
+[menu]
+  [[menu.main]]
+    name = "Home"
+    url = "/"
+    weight = 1
+  [[menu.main]]
+    name = "Blog"
+    url = "/posts/"
+    weight = 2
+  [[menu.main]]
+    name = "About"
+    url = "/about/"
+    weight = 3
+  [[menu.main]]
+    name = "Resources"
+    url = "/resources/"
+    weight = 4
+  [[menu.main]]
+    name = "Contact"
+    url = "/contact/"
+    weight = 5
+
+[params.hero]
+  eyebrow = "Real-world EV insights for India"
+  titleLine1 = "Practical EV guidance for India"
+  titleLine2 = ""
+  subtitle = "Honest blogs, real numbers, and practical advice to help you make smarter EV decisions."
+  primaryCtaText = "Browse Articles"
+  primaryCtaUrl = "/posts/"
+  secondaryCtaText = "Latest Insights"
+  secondaryCtaUrl = "#latest-posts"
+
+[[params.heroFeatures]]
+  icon = "rupee"
+  label = "Real Cost Breakdowns"
+
+[[params.heroFeatures]]
+  icon = "plug"
+  label = "Charging Insights"
+
+[[params.heroFeatures]]
+  icon = "car"
+  label = "Practical EV Experience"

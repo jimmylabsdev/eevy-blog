@@ -1,0 +1,253 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head><script src="/livereload.js?mindelay=10&amp;v=2&amp;port=1313&amp;path=livereload" data-no-instant defer></script>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Resources — eevy.in — Practical EV guidance for India</title>
+  <meta name="description" content="Honest blogs, real numbers, and practical advice to help you make smarter EV decisions." />
+
+  
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600;9..144,700;9..144,800&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+  <link rel="stylesheet" href="/css/main.min.0770627b4ee0060c6da962899b28d1805676a5831a2ea708a8d6a49a94a4b2ae.css">
+
+  
+  <script>
+  (function() {
+    try {
+      var stored = localStorage.getItem('theme');
+      if (stored) {
+        document.documentElement.setAttribute('data-theme', stored);
+      }
+    } catch(e) {}
+  })();
+</script>
+</head>
+<body>
+  <header class="site-header">
+  <div class="container header-inner">
+    <a href="/" class="brand">
+      <img src="/images/eevy-logo.png" alt="eevy.in" class="brand-logo">
+    </a>
+
+    <nav class="site-nav" aria-label="Primary">
+      <ul class="nav-list">
+        
+          
+          <li class="nav-item ">
+            <a href="/">Home</a>
+          </li>
+        
+          
+          <li class="nav-item ">
+            <a href="/posts/">Blog</a>
+          </li>
+        
+          
+          <li class="nav-item ">
+            <a href="/about/">About</a>
+          </li>
+        
+          
+          <li class="nav-item is-active">
+            <a href="/resources/">Resources</a>
+          </li>
+        
+          
+          <li class="nav-item ">
+            <a href="/contact/">Contact</a>
+          </li>
+        
+      </ul>
+
+      <button type="button" class="theme-toggle" aria-label="Toggle dark mode" data-theme-toggle>
+        <svg class="icon-moon" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+          <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/>
+        </svg>
+        <svg class="icon-sun" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+          <circle cx="12" cy="12" r="4"/>
+          <path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M4.93 19.07l1.41-1.41M17.66 6.34l1.41-1.41"/>
+        </svg>
+      </button>
+
+      <button type="button" class="nav-toggle" aria-label="Toggle menu" data-nav-toggle>
+        <span></span><span></span><span></span>
+      </button>
+    </nav>
+  </div>
+</header>
+
+
+  <main>
+    
+<article class="single">
+  <div class="container container--narrow">
+    
+    <header class="single-header">
+
+      
+
+      <div class="post-meta">
+        <time datetime="2026-05-04">May 4, 2026</time>
+      </div>
+
+    </header>
+
+    <div class="single-content">
+
+      
+      <div class="calculator-card">
+        <h2>EV Cost Calculator</h2>
+    
+        <label>Daily distance (km)</label>
+        <input id="km" type="number" value="30">
+    
+        <label>Petrol price (₹/L)</label>
+        <input id="petrol" type="number" value="100">
+    
+        <label>EV efficiency (km/kWh)</label>
+        <input id="efficiency" type="number" value="40">
+    
+        <label>Electricity cost (₹/kWh)</label>
+        <input id="electricity" type="number" value="8">
+    
+        <label>Extra cost of EV (₹)</label>
+        <input id="evcost" type="number" value="40000">
+    
+        <button onclick="calculateEV()">Calculate</button>
+    
+        <div id="result"></div>
+      </div>
+      
+    
+      <div id="ev-calculator"></div>
+<h2 id="tools-and-references-to-make-better-ev-decisions">Tools and references to make better EV decisions</h2>
+<p>This page contains practical tools and structured guides to help you evaluate EVs in India using real numbers and real usage patterns.</p>
+<hr>
+<h2 id="1-ev-cost-reality-simple-model">1. EV Cost Reality (Simple Model)</h2>
+<p>Before buying an EV, this is the only calculation that matters:</p>
+<p><strong>Are you actually saving money?</strong></p>
+<p>Use this quick framework:</p>
+<h3 id="step-1--monthly-running">Step 1 — Monthly running</h3>
+<ul>
+<li>Daily usage (km): ___</li>
+<li>Monthly km = daily × 30</li>
+</ul>
+<hr>
+<h3 id="step-2--cost-per-km">Step 2 — Cost per km</h3>
+<p><strong>Petrol:</strong></p>
+<ul>
+<li>Mileage: ~40 km/l (2-wheeler typical)
+~13 km/l (4-wheeler typical)</li>
+<li>Petrol price: ₹100/l<br>
+→ Cost per km ≈ ₹2.5</li>
+</ul>
+<p><strong>EV:</strong></p>
+<ul>
+<li>Efficiency: ~35–45 km per kWh</li>
+<li>Electricity: ₹8/kWh<br>
+→ Cost per km ≈ ₹0.20</li>
+</ul>
+<hr>
+<h3 id="step-3--monthly-cost">Step 3 — Monthly cost</h3>
+<ul>
+<li>Petrol cost = km × ₹2.5</li>
+<li>EV cost = km × ₹0.20</li>
+</ul>
+<hr>
+<h3 id="step-4--savings">Step 4 — Savings</h3>
+<ul>
+<li>Monthly savings = Petrol − EV</li>
+<li>Yearly savings = × 12</li>
+</ul>
+<hr>
+<h3 id="step-5--break-even">Step 5 — Break-even</h3>
+<ul>
+<li>Extra cost of EV ÷ yearly savings = years to recover</li>
+</ul>
+<hr>
+<h2 id="reality-check">Reality check</h2>
+<ul>
+<li>Low usage (&lt;20 km/day) → savings are slow</li>
+<li>High usage (&gt;40 km/day) → EV makes strong sense</li>
+<li>Charging access matters more than range</li>
+</ul>
+<hr>
+<h2 id="2-charging-reality-in-india">2. Charging Reality in India</h2>
+<h3 id="home-charging-ideal-case">Home charging (ideal case)</h3>
+<ul>
+<li>Works best for: apartments with parking + socket</li>
+<li>Overnight charging = sufficient for most users</li>
+</ul>
+<hr>
+<h3 id="public-charging-current-state">Public charging (current state)</h3>
+<ul>
+<li>Still inconsistent, but rapidly expanding</li>
+<li>Useful as backup, not primary strategy</li>
+</ul>
+<hr>
+<h3 id="what-actually-matters">What actually matters</h3>
+<ul>
+<li>Do you have reliable home charging?<br>
+→ If not, reconsider EV</li>
+</ul>
+<hr>
+<h2 id="3-battery--range--simplified">3. Battery &amp; Range — Simplified</h2>
+<ul>
+<li>Bigger battery (kWh) = more range</li>
+<li>Real range is ~70–80% of claimed</li>
+<li>Speed, load, and riding style matter</li>
+</ul>
+<hr>
+<h2 id="4-when-not-to-buy-an-ev">4. When NOT to buy an EV</h2>
+<ul>
+<li>Very low usage</li>
+<li>No charging access</li>
+<li>Buying only for “fuel savings” without calculation</li>
+</ul>
+<hr>
+<p>More tools and calculators will be added here as they are built.</p>
+
+
+      
+    
+    </div>
+  </div>
+</article>
+
+  </main>
+
+  <footer class="site-footer">
+  <div class="container footer-inner">
+    <div class="footer-brand">
+      
+      <img src="/images/eevy-logo.png" alt="eevy.in" class="brand-logo">
+      <p class="footer-tagline">Practical EV guidance for Indians.</p>
+    </div>
+
+    <nav class="footer-nav" aria-label="Footer">
+      <ul>
+        
+          <li><a href="/">Home</a></li>
+        
+          <li><a href="/posts/">Blog</a></li>
+        
+          <li><a href="/about/">About</a></li>
+        
+          <li><a href="/resources/">Resources</a></li>
+        
+          <li><a href="/contact/">Contact</a></li>
+        
+      </ul>
+    </nav>
+
+    <p class="footer-copy">© 2026 eevy.in — All rights reserved.</p>
+  </div>
+</footer>
+
+
+  <script src="/js/main.min.a6c1ade0b604070422a2a0d7e4da83902fa4fb3acd80f0ee5fb711efc44adbeb.js" defer></script>
+</body>
+</html>

@@ -2,17 +2,35 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
   xmlns:xhtml="http://www.w3.org/1999/xhtml">
   <url>
-    <loc>https://eevy.in/</loc>
-    <lastmod>2026-04-27T11:08:15+05:30</lastmod>
+    <loc>http://localhost:1313/posts/to-ev-or-not-to-ev/</loc>
+    <lastmod>2026-05-05T00:00:00+00:00</lastmod>
   </url><url>
-    <loc>https://eevy.in/posts/</loc>
-    <lastmod>2026-04-27T11:08:15+05:30</lastmod>
+    <loc>http://localhost:1313/posts/not-all-evs-are-born-equal/</loc>
+    <lastmod>2026-05-05T00:00:00+00:00</lastmod>
   </url><url>
-    <loc>https://eevy.in/posts/test/</loc>
-    <lastmod>2026-04-27T11:08:15+05:30</lastmod>
+    <loc>http://localhost:1313/posts/everyone-talks-about-evs---these-are-the-evs-actually-selling-today/</loc>
+    <lastmod>2026-05-05T00:00:00+00:00</lastmod>
   </url><url>
-    <loc>https://eevy.in/categories/</loc>
+    <loc>http://localhost:1313/posts/what-is-regenerative-braking/</loc>
+    <lastmod>2026-05-05T00:00:00+00:00</lastmod>
   </url><url>
-    <loc>https://eevy.in/tags/</loc>
+    <loc>http://localhost:1313/posts/</loc>
+    <lastmod>2026-05-05T00:00:00+00:00</lastmod>
+  </url><url>
+    <loc>http://localhost:1313/</loc>
+    <lastmod>2026-05-05T00:00:00+00:00</lastmod>
+  </url><url>
+    <loc>http://localhost:1313/contact/</loc>
+    <lastmod>2026-05-04T00:00:00+00:00</lastmod>
+  </url><url>
+    <loc>http://localhost:1313/resources/</loc>
+    <lastmod>2026-05-04T00:00:00+00:00</lastmod>
+  </url><url>
+    <loc>http://localhost:1313/about/</loc>
+    <lastmod>2026-04-27T00:00:00+00:00</lastmod>
+  </url><url>
+    <loc>http://localhost:1313/categories/</loc>
+  </url><url>
+    <loc>http://localhost:1313/tags/</loc>
   </url>
 </urlset>

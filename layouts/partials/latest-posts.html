@@ -1,0 +1,36 @@
+{{ $posts := first 3 (where .Site.RegularPages "Section" "posts") }}
+<section class="latest-posts" id="latest-posts">
+  <div class="container">
+    <div class="section-head">
+      <h2 class="section-title">Latest Posts</h2>
+      <a href="{{ "/posts/" | relURL }}" class="section-link">View all posts <span aria-hidden="true">→</span></a>
+    </div>
+
+    <div class="post-grid">
+      {{ range $posts }}
+        {{ $category := "" }}
+        {{ with .Params.categories }}{{ $category = index . 0 }}{{ end }}
+        {{ $thumb := .Params.thumbnail | default "/images/post-placeholder.jpg" }}
+        <article class="post-card">
+          <a href="{{ .RelPermalink }}" class="post-card-link">
+            <div class="post-card-body">
+              {{ if $category }}
+                <p class="post-category">{{ $category | upper }}</p>
+              {{ end }}
+              <h3 class="post-title">{{ .Title }}</h3>
+              <p class="post-excerpt">{{ .Params.summary | default (.Summary | plainify | truncate 120) }}</p>
+              <div class="post-meta">
+                <time datetime="{{ .Date.Format "2006-01-02" }}">{{ .Date.Format "Jan 2, 2006" }}</time>
+                <span class="dot">•</span>
+                <span>{{ .ReadingTime }} min read</span>
+              </div>
+            </div>
+            <div class="post-card-thumb">
+              <img src="{{ $thumb | relURL }}" alt="{{ .Title }}" loading="lazy" />
+            </div>
+          </a>
+        </article>
+      {{ end }}
+    </div>
+  </div>
+</section>
