@@ -11,8 +11,8 @@ If you have a question, suggestion, or want to collaborate, reach out.
 
 ### Email
 
-<a href="mailto:eevy.in@gmail.com?subject=Inquiry%20from%20eevy.in&body=Hi%2C%0A%0AI'm%20reaching%20out%20regarding...">
-eevy.in@gmail.com
+<a href="mailto:eevy.india@gmail.com?subject=Inquiry%20from%20eevy.in&body=Hi%2C%0A%0AI'm%20reaching%20out%20regarding...">
+eevy.india@gmail.com
 </a>
 
 ---
