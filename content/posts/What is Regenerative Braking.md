@@ -2,7 +2,7 @@
 title: "What Is Regenerative Braking?"
 date: 2026-05-05
 draft: false
-featured: true
+featured: false
 image: "/images/blogs/What-Is-Regenerative-Braking.png"
 thumbnail: "/images/blogs/What-Is-Regenerative-Braking-thumb.png"
 weight: 4

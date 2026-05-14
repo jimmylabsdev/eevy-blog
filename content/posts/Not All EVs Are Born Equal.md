@@ -2,10 +2,10 @@
 title: "Not All EVs Are Born Equal"
 date: 2026-05-05
 draft: false
-featured: true
+featured: false
 image: "/images/blogs/Not-All-EVs-Are-Born-Equal.png"
 thumbnail: "/images/blogs/Not-All-EVs-Are-Born-Equal-thumb.png"
-weight: 2
+weight: 5
 ---
 
 ## Born Electric vs ICE-Derived Platforms
