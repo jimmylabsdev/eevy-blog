@@ -5,7 +5,6 @@ draft: false
 featured: false
 image: "/images/blogs/Not-All-EVs-Are-Born-Equal.png"
 thumbnail: "/images/blogs/Not-All-EVs-Are-Born-Equal-thumb.png"
-weight: 5
 ---
 
 ## Born Electric vs ICE-Derived Platforms

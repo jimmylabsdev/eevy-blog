@@ -5,7 +5,6 @@ draft: false
 featured: false
 image: "/images/blogs/What-Is-Regenerative-Braking.png"
 thumbnail: "/images/blogs/What-Is-Regenerative-Braking-thumb.png"
-weight: 4
 ---
 ## Free current anyone?
 
