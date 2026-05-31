@@ -5,7 +5,7 @@ draft: false
 featured: true
 image: "/images/blogs/These-Are-The-EVs-Actually-Selling.png"
 thumbnail: "/images/blogs/These-Are-The-EVs-Actually-Selling-thumb.png"
-weight: 4
+weight: 5
 ---
 
 ## The real EVs that are making a killing in the market, very silently.
