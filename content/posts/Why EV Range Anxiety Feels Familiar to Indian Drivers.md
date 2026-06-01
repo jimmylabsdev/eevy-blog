@@ -5,7 +5,7 @@ draft: false
 featured: false
 image: "/images/blogs/Why-EV-Range-Anxiety-Feels-Familiar-to-Indian-Drivers.png"
 thumbnail: "/images/blogs/Why-EV-Range-Anxiety-Feels-Familiar-to-Indian-Drivers-Thumb.png"
-weight: 3
+weight: 2
 ---
 
 ## Back When Planning Was Part of Driving

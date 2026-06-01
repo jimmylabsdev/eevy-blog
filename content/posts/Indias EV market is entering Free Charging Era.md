@@ -5,7 +5,7 @@ draft: false
 featured: true
 image: "/images/blogs/Indias-EV-Market-Is-Entering-The-Free-Charging-Era.png"
 thumbnail: "/images/blogs/Indias-EV-Market-Is-Entering-The-Free-Charging-Era-thumb.png"
-weight: 2
+weight: 3
 ---
 
 ## The “Free Charging” Era — And Why That Changes Everything
