@@ -5,7 +5,6 @@ draft: false
 featured: true
 image: "/images/blogs/To-EV-Or-Not-To-EV.png"
 thumbnail: "/images/blogs/To-EV-Or-Not-To-EV-thumb.png"
-weight: 4
 ---
 
 ## A Thought That Started It All

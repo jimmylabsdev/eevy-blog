@@ -2,10 +2,9 @@
 title: "Everyone Talks About EVs - These Are the EVs Actually Selling Today"
 date: 2026-05-05
 draft: false
-featured: true
+featured: false
 image: "/images/blogs/These-Are-The-EVs-Actually-Selling.png"
 thumbnail: "/images/blogs/These-Are-The-EVs-Actually-Selling-thumb.png"
-weight: 5
 ---
 
 ## The real EVs that are making a killing in the market, very silently.

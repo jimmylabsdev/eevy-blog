@@ -2,6 +2,7 @@
 title: "Resources"
 date: 2026-05-04
 ---
+
 <div id="ev-calculator"></div>
 
 
@@ -109,3 +110,13 @@ Use this quick framework:
 ---
 
 More tools and calculators will be added here as they are built.
+
+---
+
+## Downloads
+
+### EV Buying Readiness Checklist
+
+A practical checklist covering charging, infrastructure, financing, insurance, battery sizing and dealer questions.
+
+📄 [Download EV Purchase Checklist](/resources/Eevy-Purchase-Readiness-Checklist.pdf)

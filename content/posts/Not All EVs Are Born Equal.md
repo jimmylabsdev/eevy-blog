@@ -1,8 +1,8 @@
 ---
 title: "Not All EVs Are Born Equal"
-date: 2026-05-05
+date: 2026-05-06
 draft: false
-featured: false
+featured: true
 image: "/images/blogs/Not-All-EVs-Are-Born-Equal.png"
 thumbnail: "/images/blogs/Not-All-EVs-Are-Born-Equal-thumb.png"
 ---
