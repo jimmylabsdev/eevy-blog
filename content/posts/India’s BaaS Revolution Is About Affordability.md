@@ -6,7 +6,6 @@ draft: false
 featured: false
 image: "/images/blogs/Is-the-EV-Industry-Solving-the-Wrong-Problem-with-BaaS.png"
 thumbnail: "/images/blogs/Is-the-EV-Industry-Solving-the-Wrong-Problem-with-BaaS-thumb-01.png"
-weight: 2
 ---
 
 ## The New Urban Cruiser Ebella -

@@ -1,12 +1,11 @@
 ---
 title: "Why Buying an EV in India Needs More Planning Than Most People Realize"
 description: "BaaS - Is it a Revolution or Illusion?"
-date: 2026-05-30
+date: 2026-06-02
 draft: false
 featured: false
 image: "/images/blogs/Why-Buying-an-EV-in-India-Needs-More-Planning-Than-Most-People-Realize.png"
 thumbnail: "/images/blogs/Why-Buying-an-EV-in-India-Needs-More-Planning-Than-Most-People-Realize-thumb.png"
-weight: 1
 ---
 
 ## The Test Drive Is Probably The Last Thing You Need
