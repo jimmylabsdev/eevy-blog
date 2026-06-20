@@ -1474,6 +1474,34 @@
 </body>
 <script>
 
+
+
+
+
+var CALC_SESSION_ID = (function() {
+  try {
+    var existing = sessionStorage.getItem('eevy_calc_session_id');
+    if (existing) return existing;
+    var fresh = (crypto && crypto.randomUUID) ? crypto.randomUUID() :
+      'calc-' + Date.now() + '-' + Math.random().toString(36).slice(2);
+    sessionStorage.setItem('eevy_calc_session_id', fresh);
+    return fresh;
+  } catch (e) {
+    return 'calc-fallback-' + Date.now();
+  }
+})();
+
+
+
+
+
+
+var CITY_TIER_MAP = {
+  "1": "Metro/Tier 1",
+  "2": "Major City/Tier 2",
+  "3": "Town/Village"
+};
+
 function calculateCost() {
 
   const baseCost = 8000;
@@ -1554,6 +1582,52 @@ function calculateCost() {
     </button>
 
   `;
+
+  logCostEstimate({
+    property: property,
+    distance: distance,
+    charger: charger,
+    total: total,
+    upper: upper,
+    complexity: complexity
+  });
+}
+
+function logCostEstimate(calc) {
+  
+  
+  var cityTypeEl = document.getElementById('city-type');
+  var cityTier = cityTypeEl ? (CITY_TIER_MAP[cityTypeEl.value] || null) : null;
+
+  
+  
+  
+  
+  var residenceMap = { 5000: 'Apartment', 3000: 'Villa', 0: 'Independent House' };
+  var distanceMap = { 0: '<20m', 5000: '20-50m', 15000: '50-100m', 30000: '100m+' };
+  var chargerMap = { 0: 'NotSure', 3000: '3.3kW', 8000: '7.2kW' };
+
+  var payload = {
+    session_id: CALC_SESSION_ID,
+    city_tier: cityTier,
+    residence_type: residenceMap[calc.property] || null,
+    distance_band: distanceMap[calc.distance] || null,
+    charger_size: chargerMap[calc.charger] || null,
+    estimate_low: calc.total,
+    estimate_high: calc.upper,
+    risk_tag: calc.complexity
+  };
+
+  fetch('/api/cost-estimate', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify(payload)
+  }).catch(function(err) {
+    
+    
+    
+    console.warn('Cost estimate logging failed (non-blocking):', err);
+  });
 }
 
 function resetCalculator() {
