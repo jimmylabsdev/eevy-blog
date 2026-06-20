@@ -948,6 +948,34 @@
 </body>
 <script>
 
+// Lightweight anonymous session id for this page's visitors — not
+// linked to the main assessment's session id. Used only to let you
+// dedupe repeat submissions in the cost_estimator_events table, not
+// to identify anyone.
+var CALC_SESSION_ID = (function() {
+  try {
+    var existing = sessionStorage.getItem('eevy_calc_session_id');
+    if (existing) return existing;
+    var fresh = (crypto && crypto.randomUUID) ? crypto.randomUUID() :
+      'calc-' + Date.now() + '-' + Math.random().toString(36).slice(2);
+    sessionStorage.setItem('eevy_calc_session_id', fresh);
+    return fresh;
+  } catch (e) {
+    return 'calc-fallback-' + Date.now();
+  }
+})();
+
+// Maps the city-type dropdown's raw value to the semantic label
+// Supabase's cost_estimator_events.city_tier constraint expects.
+// Keep this in sync with the <option value="..."> values in the
+// #city-type <select> — if you ever add/reorder options, update
+// this map to match.
+var CITY_TIER_MAP = {
+  "1": "Metro/Tier 1",
+  "2": "Major City/Tier 2",
+  "3": "Town/Village"
+};
+
 function calculateCost() {
 
   const baseCost = 8000;
@@ -1028,6 +1056,52 @@ function calculateCost() {
     </button>
 
   `;
+
+  logCostEstimate({
+    property: property,
+    distance: distance,
+    charger: charger,
+    total: total,
+    upper: upper,
+    complexity: complexity
+  });
+}
+
+function logCostEstimate(calc) {
+  // City tier is optional — the #city-type field may not exist yet
+  // on every version of this page. Read it defensively.
+  var cityTypeEl = document.getElementById('city-type');
+  var cityTier = cityTypeEl ? (CITY_TIER_MAP[cityTypeEl.value] || null) : null;
+
+  // Translate the raw form values into the human-readable labels
+  // Supabase expects, matching what's shown on screen rather than
+  // sending opaque numbers that mean nothing without this file open
+  // alongside them.
+  var residenceMap = { 5000: 'Apartment', 3000: 'Villa', 0: 'Independent House' };
+  var distanceMap = { 0: '<20m', 5000: '20-50m', 15000: '50-100m', 30000: '100m+' };
+  var chargerMap = { 0: 'NotSure', 3000: '3.3kW', 8000: '7.2kW' };
+
+  var payload = {
+    session_id: CALC_SESSION_ID,
+    city_tier: cityTier,
+    residence_type: residenceMap[calc.property] || null,
+    distance_band: distanceMap[calc.distance] || null,
+    charger_size: chargerMap[calc.charger] || null,
+    estimate_low: calc.total,
+    estimate_high: calc.upper,
+    risk_tag: calc.complexity
+  };
+
+  fetch('/api/cost-estimate', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify(payload)
+  }).catch(function(err) {
+    // Same principle as the main assessment — never let a logging
+    // failure interrupt what the visitor is doing. They already see
+    // their estimate on screen regardless of whether this succeeds.
+    console.warn('Cost estimate logging failed (non-blocking):', err);
+  });
 }
 
 function resetCalculator() {
