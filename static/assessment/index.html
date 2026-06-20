@@ -25,8 +25,8 @@ body{font-family:system-ui,-apple-system,sans-serif;background:#fff;color:#1a1a1
 /* ── LANDING ── */
 #landing{background:#fff;padding:0}
 .hero{background:linear-gradient(160deg,#04342C 0%,#0F6E56 60%,#1D9E75 100%);padding:48px 24px 56px;position:relative;overflow:hidden}
-.hero::before{content:'';position:absolute;right:-40px;top:-40px;width:200px;height:200px;border-radius:50%;background:rgba(255,255,255,0.05)}
-.hero::after{content:'';position:absolute;right:20px;bottom:-60px;width:140px;height:140px;border-radius:50%;background:rgba(255,255,255,0.04)}
+.hero::before{content:'';position:absolute;right:-40px;top:-40px;width:200px;height:200px;border-radius:50%;background:rgba(255,255,255,0.05);pointer-events:none}
+.hero::after{content:'';position:absolute;right:20px;bottom:-60px;width:140px;height:140px;border-radius:50%;background:rgba(255,255,255,0.04);pointer-events:none}
 .logo{display:flex;align-items:center;gap:8px;margin-bottom:40px}
 .hero h1{font-size:30px;font-weight:700;color:#fff;line-height:1.2;letter-spacing:-0.5px;margin-bottom:12px}
 .hero h1 span{color:#9FE1CB}
@@ -103,7 +103,7 @@ input[type=range]{width:100%;accent-color:var(--green)}
 #results{background:#f8f8f6;padding-bottom:48px}
 #results .results-hero{padding-bottom:20px}
 .results-hero{background:linear-gradient(160deg,#04342C 0%,#1D9E75 100%);padding:28px 20px 32px;position:relative;overflow:hidden}
-.results-hero::before{content:'';position:absolute;right:-30px;top:-30px;width:160px;height:160px;border-radius:50%;background:rgba(255,255,255,0.06)}
+.results-hero::before{content:'';position:absolute;right:-30px;top:-30px;width:160px;height:160px;border-radius:50%;background:rgba(255,255,255,0.06);pointer-events:none}
 .results-top{display:flex;align-items:center;justify-content:space-between;margin-bottom:20px}
 .results-logo{display:flex;flex-direction:column;align-items:flex-start}
 .share-btn{background:rgba(255,255,255,0.15);border:1px solid rgba(255,255,255,0.25);border-radius:8px;padding:6px 12px;color:#fff;font-size:13px;cursor:pointer;display:flex;align-items:center;gap:6px}
@@ -523,10 +523,27 @@ input[type=range]{width:100%;accent-color:var(--green)}
         </button>
       </div>
     </div>
+    <div class="question-block">
+      <span class="q-label">Do you own or rent this home?</span>
+      <span class="q-hint">Renters usually need landlord consent as well as (or instead of) society approval — this changes how long the approval process takes.</span>
+      <div class="option-grid" id="homeOwnership">
+        <button class="option-btn" onclick="selectOpt(this,'homeOwnership','Own')">
+          <div class="opt-icon"><i class="ti ti-key" aria-hidden="true"></i></div> I own this home
+          <i class="ti ti-check check" aria-hidden="true"></i>
+        </button>
+        <button class="option-btn" onclick="selectOpt(this,'homeOwnership','Rent')">
+          <div class="opt-icon"><i class="ti ti-file-text" aria-hidden="true"></i></div> I rent this home
+          <i class="ti ti-check check" aria-hidden="true"></i>
+        </button>
+        <button class="option-btn" onclick="selectOpt(this,'homeOwnership','Family')">
+          <div class="opt-icon"><i class="ti ti-users" aria-hidden="true"></i></div> Family-owned, I live here
+          <i class="ti ti-check check" aria-hidden="true"></i>
+        </button>
+      </div>
+    </div>
     <button class="next-btn" onclick="goTo('step3')">
       Continue <i class="ti ti-arrow-right" aria-hidden="true"></i>
     </button>
-    <p class="skip-link" onclick="goTo('step3')">Skip — I'll fill this in later</p>
   </div>
 </div>
 
@@ -831,15 +848,83 @@ input[type=range]{width:100%;accent-color:var(--green)}
         <button class="option-btn" onclick="selectOpt(this,'chargingConfidence','NoIdea')"><div class="opt-icon"><i class="ti ti-question-mark" aria-hidden="true"></i></div> No idea at all<i class="ti ti-check check" aria-hidden="true"></i></button>
       </div>
     </div>
+    <button class="next-btn" onclick="goTo('step4b')">Continue <i class="ti ti-arrow-right" aria-hidden="true"></i></button>
+  </div>
+</div>
+
+<!-- ════════════════════════════════════
+     STEP 4B — VEHICLE & BUDGET INTELLIGENCE (post-results)
+════════════════════════════════════ -->
+<div id="step4b" class="screen">
+  <div class="progress-bar-wrap"><div class="progress-bar" style="width:48%"></div></div>
+  <div class="step-header">
+    <button class="back-btn" onclick="goTo('step4')"><i class="ti ti-arrow-left" aria-hidden="true"></i></button>
+    <div class="step-info">
+      <div class="step-label">A bit more about you</div>
+      <div class="step-title">Your current vehicle &amp; budget</div>
+    </div>
+  </div>
+  <div class="step-body">
+    <div class="welcome-banner" style="margin-bottom:20px">
+      <div class="welcome-banner-text">
+        <span>A few quick ones about what you drive today and what you're planning — this helps us tailor pricing and savings info to you.</span>
+      </div>
+    </div>
+    <div class="question-block">
+      <span class="q-label">Have you already test-driven an EV?</span>
+      <div class="option-grid" id="testDriven">
+        <button class="option-btn" onclick="selectOpt(this,'testDriven','Yes')"><div class="opt-icon"><i class="ti ti-steering-wheel" aria-hidden="true"></i></div> Yes, I've test-driven one<i class="ti ti-check check" aria-hidden="true"></i></button>
+        <button class="option-btn" onclick="selectOpt(this,'testDriven','No')"><div class="opt-icon"><i class="ti ti-x" aria-hidden="true"></i></div> Not yet<i class="ti ti-check check" aria-hidden="true"></i></button>
+      </div>
+    </div>
+    <div class="question-block">
+      <span class="q-label">What do you drive today?</span>
+      <div class="option-grid" id="currentVehicle">
+        <button class="option-btn" onclick="selectOpt(this,'currentVehicle','Petrol');updateFuelContext('Petrol')"><div class="opt-icon"><i class="ti ti-gas-station" aria-hidden="true"></i></div> Petrol<i class="ti ti-check check" aria-hidden="true"></i></button>
+        <button class="option-btn" onclick="selectOpt(this,'currentVehicle','Diesel');updateFuelContext('Diesel')"><div class="opt-icon"><i class="ti ti-engine" aria-hidden="true"></i></div> Diesel<i class="ti ti-check check" aria-hidden="true"></i></button>
+        <button class="option-btn" onclick="selectOpt(this,'currentVehicle','CNG');updateFuelContext('CNG')"><div class="opt-icon"><i class="ti ti-flame" aria-hidden="true"></i></div> CNG<i class="ti ti-check check" aria-hidden="true"></i></button>
+        <button class="option-btn" onclick="selectOpt(this,'currentVehicle','Hybrid');updateFuelContext('Hybrid')"><div class="opt-icon"><i class="ti ti-leaf" aria-hidden="true"></i></div> Hybrid<i class="ti ti-check check" aria-hidden="true"></i></button>
+        <button class="option-btn" onclick="selectOpt(this,'currentVehicle','EV');updateFuelContext('EV')"><div class="opt-icon"><i class="ti ti-bolt" aria-hidden="true"></i></div> EV<i class="ti ti-check check" aria-hidden="true"></i></button>
+        <button class="option-btn" onclick="selectOpt(this,'currentVehicle','No car');updateFuelContext('No car')"><div class="opt-icon"><i class="ti ti-walk" aria-hidden="true"></i></div> No car<i class="ti ti-check check" aria-hidden="true"></i></button>
+      </div>
+      <div id="fuelContext" style="display:none;margin-top:10px;font-size:12px;color:var(--text3);line-height:1.5;padding:8px;background:var(--gray-light);border-radius:6px"></div>
+    </div>
+    <div class="question-block">
+      <span class="q-label">This EV will be:</span>
+      <div class="option-grid" id="replacementType">
+        <button class="option-btn" onclick="selectOpt(this,'replacementType','FirstCar')"><div class="opt-icon"><i class="ti ti-sparkles" aria-hidden="true"></i></div> My first car<i class="ti ti-check check" aria-hidden="true"></i></button>
+        <button class="option-btn" onclick="selectOpt(this,'replacementType','Replacing')"><div class="opt-icon"><i class="ti ti-replace" aria-hidden="true"></i></div> Replacing an existing car<i class="ti ti-check check" aria-hidden="true"></i></button>
+        <button class="option-btn" onclick="selectOpt(this,'replacementType','Additional')"><div class="opt-icon"><i class="ti ti-plus" aria-hidden="true"></i></div> An additional car<i class="ti ti-check check" aria-hidden="true"></i></button>
+      </div>
+    </div>
+    <div class="question-block">
+      <span class="q-label">How many cars does your household have?</span>
+      <div class="option-grid" id="householdCars">
+        <button class="option-btn" onclick="selectOpt(this,'householdCars','1')"><div class="opt-icon"><i class="ti ti-car" aria-hidden="true"></i></div> Just this one<i class="ti ti-check check" aria-hidden="true"></i></button>
+        <button class="option-btn" onclick="selectOpt(this,'householdCars','2')"><div class="opt-icon"><i class="ti ti-car" aria-hidden="true"></i></div> Two cars<i class="ti ti-check check" aria-hidden="true"></i></button>
+        <button class="option-btn" onclick="selectOpt(this,'householdCars','3+')"><div class="opt-icon"><i class="ti ti-car" aria-hidden="true"></i></div> Three or more<i class="ti ti-check check" aria-hidden="true"></i></button>
+      </div>
+    </div>
+    <div class="question-block">
+      <span class="q-label">What's your budget range for this EV?</span>
+      <div class="option-grid" id="budgetRange">
+        <button class="option-btn" onclick="selectOpt(this,'budgetRange','Under10L');updateBudgetContext('Under10L')"><div class="opt-icon"><i class="ti ti-currency-rupee" aria-hidden="true"></i></div> Under ₹10 lakh<i class="ti ti-check check" aria-hidden="true"></i></button>
+        <button class="option-btn" onclick="selectOpt(this,'budgetRange','10to15L');updateBudgetContext('10to15L')"><div class="opt-icon"><i class="ti ti-currency-rupee" aria-hidden="true"></i></div> ₹10–15 lakh<i class="ti ti-check check" aria-hidden="true"></i></button>
+        <button class="option-btn" onclick="selectOpt(this,'budgetRange','15to20L');updateBudgetContext('15to20L')"><div class="opt-icon"><i class="ti ti-currency-rupee" aria-hidden="true"></i></div> ₹15–20 lakh<i class="ti ti-check check" aria-hidden="true"></i></button>
+        <button class="option-btn" onclick="selectOpt(this,'budgetRange','20to30L');updateBudgetContext('20to30L')"><div class="opt-icon"><i class="ti ti-currency-rupee" aria-hidden="true"></i></div> ₹20–30 lakh<i class="ti ti-check check" aria-hidden="true"></i></button>
+        <button class="option-btn" onclick="selectOpt(this,'budgetRange','30LPlus');updateBudgetContext('30LPlus')"><div class="opt-icon"><i class="ti ti-currency-rupee" aria-hidden="true"></i></div> ₹30 lakh+<i class="ti ti-check check" aria-hidden="true"></i></button>
+        <button class="option-btn" onclick="selectOpt(this,'budgetRange','Undecided');updateBudgetContext('Undecided')"><div class="opt-icon"><i class="ti ti-question-mark" aria-hidden="true"></i></div> Still deciding<i class="ti ti-check check" aria-hidden="true"></i></button>
+      </div>
+      <div id="budgetContext" style="display:none;margin-top:10px;font-size:12px;color:var(--text3);line-height:1.5;padding:8px;background:var(--gray-light);border-radius:6px"></div>
+    </div>
     <button class="next-btn" onclick="goTo('step5')">Continue <i class="ti ti-arrow-right" aria-hidden="true"></i></button>
-    <p class="skip-link" onclick="goTo('step5')">Skip this step</p>
   </div>
 </div>
 
 <div id="step5" class="screen">
   <div class="progress-bar-wrap"><div class="progress-bar" style="width:65%"></div></div>
   <div class="step-header">
-    <button class="back-btn" onclick="goTo('step4')"><i class="ti ti-arrow-left" aria-hidden="true"></i></button>
+    <button class="back-btn" onclick="goTo('step4b')"><i class="ti ti-arrow-left" aria-hidden="true"></i></button>
     <div class="step-info">
       <div class="step-label">One last step</div>
       <div class="step-title">Almost there</div>
@@ -1396,6 +1481,9 @@ function resetAssessment() {
   var emw=document.getElementById('evModelWrap'); if(emw) emw.style.display='none';
   var em=document.getElementById('evModel'); if(em) em.value='';
 
+  var fctx=document.getElementById('fuelContext'); if(fctx){ fctx.style.display='none'; fctx.innerHTML=''; }
+  var bctx=document.getElementById('budgetContext'); if(bctx){ bctx.style.display='none'; bctx.innerHTML=''; }
+
   goTo('landing');
 }
 
@@ -1773,6 +1861,7 @@ function submitAssessment() {
     existing_chargers: state.existingChargers || null,
     meter_distance: state.meterDist ? parseInt(state.meterDist) : null,
     society_approval: state.societyApproval || null,
+    home_ownership: state.homeOwnership || null,
     daily_km: state.dailyKm ? parseInt(state.dailyKm) : null,
     monthly_km: state.monthlyKm ? parseInt(state.monthlyKm) : null,
     charge_pref: state.chargePref || null,
@@ -1977,6 +2066,11 @@ function submitLead() {
     home_charge_dependency: state.homeChargeDependency || null,
     purchase_delay: state.purchaseDelay || null,
     charging_confidence: state.chargingConfidence || null,
+    test_driven: state.testDriven || null,
+    current_vehicle: state.currentVehicle || null,
+    replacement_type: state.replacementType || null,
+    household_cars: state.householdCars || null,
+    budget_range: state.budgetRange || null,
     buyer_type: state.buyerType || null,
     ev_shortlisted: state.evShortlisted || null,
     ev_model: state.evModel || null,
@@ -2050,6 +2144,66 @@ function updateMonthlyContext(val) {
   var el = document.getElementById('monthlyContext');
   if (el) el.textContent = ctx;
 }
+
+// Rough national-average assumptions — indicative only, not city-specific.
+// kmPerUnit = typical mileage, pricePerUnit = approx fuel price per litre/kg.
+var FUEL_PROFILES = {
+  Petrol: { kmPerUnit: 15, pricePerUnit: 105, label: 'petrol' },
+  Diesel: { kmPerUnit: 19, pricePerUnit: 92,  label: 'diesel' },
+  CNG:    { kmPerUnit: 22, pricePerUnit: 85,  label: 'CNG' },
+  Hybrid: { kmPerUnit: 22, pricePerUnit: 105, label: 'fuel' }
+};
+var EV_KM_PER_KWH = 6.5;
+var EV_TARIFF_PER_KWH = 8;
+
+function updateFuelContext(vehicleType) {
+  var box = document.getElementById('fuelContext');
+  if (!box) return;
+
+  if (vehicleType === 'EV') {
+    box.style.display = 'block';
+    box.textContent = 'You already know the charging routine — this guide will focus on making your next EV (or your current one) easier to live with at home.';
+    return;
+  }
+  if (vehicleType === 'No car') {
+    box.style.display = 'none';
+    box.textContent = '';
+    return;
+  }
+  var profile = FUEL_PROFILES[vehicleType];
+  if (!profile) { box.style.display = 'none'; return; }
+
+  var monthlyKm = parseInt(state.monthlyKm) || 900;
+  var fuelCost = Math.round((monthlyKm / profile.kmPerUnit) * profile.pricePerUnit);
+  var evCost = Math.round((monthlyKm / EV_KM_PER_KWH) * EV_TARIFF_PER_KWH);
+  var savings = fuelCost - evCost;
+
+  box.style.display = 'block';
+  box.innerHTML = 'Based on your ' + monthlyKm.toLocaleString('en-IN') + ' km/month, you\'re likely spending around <strong>\u20b9' + fuelCost.toLocaleString('en-IN') + '/month</strong> on ' + profile.label + '. Charging an EV for the same distance would cost roughly <strong>\u20b9' + evCost.toLocaleString('en-IN') + '/month</strong> at home — about <strong>\u20b9' + savings.toLocaleString('en-IN') + ' less</strong>. Indicative only; varies by vehicle and local prices.';
+}
+
+// Ballpark model counts per band, India market, mid-2026. Indicative —
+// new launches happen often, treat as a rough sense of choice, not a catalogue.
+var BUDGET_BANDS = {
+  Under10L: '~8 models — entry hatchbacks like the Tata Tiago EV, MG Comet, and Tata Punch EV (with battery rental).',
+  '10to15L': '~10 models — hatchbacks and entry SUVs like the Tata Punch EV, Citroen eC3, and MG Windsor EV.',
+  '15to20L': '~10 models — the most contested segment: Maruti eVitara, Tata Nexon EV, and Mahindra BE 6.',
+  '20to30L': '~8 models — premium SUVs like the Mahindra XEV 9e and Hyundai Creta EV.',
+  '30LPlus': '15+ models — premium imports: Tesla, BMW, Mercedes, Audi, Kia, and others.'
+};
+
+function updateBudgetContext(band) {
+  var box = document.getElementById('budgetContext');
+  if (!box) return;
+  if (band === 'Undecided' || !BUDGET_BANDS[band]) {
+    box.style.display = 'none';
+    box.innerHTML = '';
+    return;
+  }
+  box.style.display = 'block';
+  box.innerHTML = BUDGET_BANDS[band] + ' <span style="opacity:0.7">Indicative — based on models on sale in India; changes as new ones launch.</span>';
+}
+
 
 // ════════════════════════════════════
 // ADMIN TABS
