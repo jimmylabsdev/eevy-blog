@@ -1192,7 +1192,7 @@
     <div class="insight-card">
       <p><strong>Your Buying Kit is almost ready.</strong> Enter your details and we'll email you the full document — plus a downloadable PDF you can take to the dealership.</p>
     </div>
-    <button class="btn btn-primary" onclick="startLeadCapture()" style="font-size:1.0625rem;padding:18px 28px">
+    <button class="btn btn-primary" onclick="showScreen('screen-lead')" style="font-size:1.0625rem;padding:18px 28px">
       Get My EV Buying Kit
       <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
     </button>
@@ -1681,75 +1681,10 @@ function derived() {
 ================================================================ */
 function genId() { return 'eevy_' + Date.now() + '_' + Math.random().toString(36).slice(2,8); }
 
-/* ================================================================
-   ANALYTICS EVENTS (GA4)
-   Safe wrapper: calls are ignored until gtag is available.
-================================================================ */
-function eevyTrack(eventName, params) {
-  params = params || {};
-  if (typeof window.gtag === 'function') {
-    window.gtag('event', eventName, params);
-    return;
-  }
-
-  // If the Google tag is still loading, queue the event instead of losing it.
-  window.dataLayer = window.dataLayer || [];
-  window.dataLayer.push(['event', eventName, params]);
-}
-
-function eevyLang() {
-  return (document.documentElement.lang || 'en').toLowerCase();
-}
-
-function assmt_landing_view() { eevyTrack('landing_view', { language: eevyLang() }); }
-function assmt_landing_cta_click() { eevyTrack('landing_cta_click', { language: eevyLang() }); }
-function assmt_start() { eevyTrack('assessment_start', { language: eevyLang() }); }
-
-function assmt_top5_view() { eevyTrack('top5_view'); }
-function assmt_top5_continue() { eevyTrack('top5_continue'); }
-
-function assmt_top3_view() { eevyTrack('top3_view'); }
-function assmt_top3_continue() { eevyTrack('top3_continue'); }
-
-function assmt_finance_view() { eevyTrack('finance_view'); }
-function assmt_finance_continue() { eevyTrack('finance_continue'); }
-
-function assmt_insurance_view() { eevyTrack('insurance_view'); }
-function assmt_insurance_continue() { eevyTrack('insurance_continue'); }
-
-function assmt_charging_view() { eevyTrack('charging_view'); }
-function assmt_charging_continue() { eevyTrack('charging_continue'); }
-
-function assmt_showroom_view() { eevyTrack('showroom_view'); }
-function assmt_showroom_continue() { eevyTrack('showroom_continue'); }
-
-function assmt_lead_view() { eevyTrack('lead_view'); }
-function assmt_lead_submitted() { eevyTrack('lead_submitted'); }
-
-function assmt_buying_kit_view() { eevyTrack('buying_kit_view'); }
-
-const SCREEN_VIEW_TRACKERS = {
-  'screen-landing': assmt_landing_view,
-  'screen-reward-ev-budget': assmt_top5_view,
-  'screen-reward-ev': assmt_top3_view,
-  'screen-reward-finance': assmt_finance_view,
-  'screen-reward-insurance': assmt_insurance_view,
-  'screen-reward-charging': assmt_charging_view,
-  'screen-reward-dealer': assmt_showroom_view,
-  'screen-lead': assmt_lead_view,
-  'screen-kit': assmt_buying_kit_view,
-};
-
-function trackScreenView(id) {
-  const fn = SCREEN_VIEW_TRACKERS[id];
-  if (typeof fn === 'function') fn();
-}
-
 function showScreen(id) {
   document.querySelectorAll('.screen, .screen-flex').forEach(s => s.classList.remove('active'));
   document.getElementById(id).classList.add('active');
   window.scrollTo({ top:0, behavior:'instant' });
-  trackScreenView(id);
 }
 
 function svgArrow() {
@@ -1800,8 +1735,6 @@ function hideJourneyBar() {
    ENTRY POINT
 ================================================================ */
 function startJourney() {
-  assmt_landing_cta_click();
-  assmt_start();
   state.sessionId = genId();
   state.currentStageIdx = 0;
   state.currentQIdx = 0;
@@ -2143,44 +2076,34 @@ function submitAffordabilityIncome() {
 }
 
 function startMatchMyNeeds() {
-  assmt_top5_continue();
   state.currentStageIdx = JOURNEY_STAGES.findIndex(s => s.id === 'personalise');
   state.currentQIdx = 0;
   renderQuestion();
   showScreen('screen-question');
 }
 function startStage3() {
-  assmt_top3_continue();
   state.currentStageIdx = JOURNEY_STAGES.findIndex(s => s.id === 'affordability');
   state.currentQIdx = 0;
   renderQuestion();
   showScreen('screen-question');
 }
 function startStage4() {
-  assmt_finance_continue();
   state.currentStageIdx = JOURNEY_STAGES.findIndex(s => s.id === 'insurance');
   state.currentQIdx = 0;
   renderQuestion();
   showScreen('screen-question');
 }
 function startStage5() {
-  assmt_insurance_continue();
   state.currentStageIdx = JOURNEY_STAGES.findIndex(s => s.id === 'charging');
   state.currentQIdx = 0;
   renderQuestion();
   showScreen('screen-question');
 }
 function startStage6() {
-  assmt_charging_continue();
   state.currentStageIdx = JOURNEY_STAGES.findIndex(s => s.id === 'showroom');
   state.currentQIdx = 0;
   renderQuestion();
   showScreen('screen-question');
-}
-
-function startLeadCapture() {
-  assmt_showroom_continue();
-  showScreen('screen-lead');
 }
 
 /* ================================================================
@@ -4284,10 +4207,6 @@ function applyVehicleSelectionHighlight() {
     el.classList.toggle('is-selected', !!(v && state.selectedVehicleId === v.id));
   });
 }
-
-
-// Initial screen view
-assmt_landing_view();
 
 </script>
 </body>
