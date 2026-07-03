@@ -7,6 +7,9 @@
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-56HRKMV1ME"></script>
+  <script src="/js/analytics.js"></script>
+  <!-- <script src="/js/events.js"></script> -->
   <style>
     /* =========================================================
        DESIGN TOKENS
@@ -634,14 +637,14 @@
       border-radius:10px; padding:10px 8px 9px;
       box-shadow:0 1px 3px rgba(0,0,0,0.07);
       display:flex; flex-direction:column; align-items:center; justify-content:flex-start; text-align:center;
-      position:relative; margin-top:10px; box-sizing:border-box; overflow:hidden;
+      position:relative; box-sizing:border-box; overflow:hidden;
     }
     .bt-badge {
-      position:absolute; top:-9px; left:50%; transform:translateX(-50%);
       display:inline-flex; align-items:center;
       font-size:0.4375rem; font-weight:600; letter-spacing:0.03em; text-transform:uppercase;
       padding:2px 6px; border-radius:20px; white-space:nowrap;
       box-shadow:0 1px 3px rgba(0,0,0,0.10);
+      margin-bottom:6px;
     }
     .bt-badge.low-rate  { background:#ECFDF5; color:#065F46; border:1px solid #A7F3D0; }
     .bt-badge.best-offer{ background:#EFF6FF; color:#1D4ED8; border:1px solid #BFDBFE; }
@@ -653,7 +656,7 @@
       margin-bottom:6px; background:transparent; flex-shrink:0;
     }
     .bt-logo img { width:100%; height:100%; object-fit:contain; }
-    .bt-rate { font-size:0.8125rem; font-weight:800; color:var(--ink); letter-spacing:-0.02em; line-height:1; }
+    .bt-rate { font-size:0.8125rem; font-weight:800; color:var(--ink); letter-spacing:-0.02em; line-height:1; margin-top:2px; }
     .bt-rate span { font-size:0.5rem; font-weight:600; color:var(--ink-4); }
     .bt-meta { font-size:0.4375rem; color:var(--ink-5); margin-top:2px; line-height:1.3; }
     .bank-tiles-disclaimer {
@@ -2785,12 +2788,15 @@ async function renderLoanTiles() {
       ? `<img src="${p.logo_url}" alt="${(p.bank_name || '').replace(/"/g, '&quot;')}">`
       : '';
 
+    // Interest rate always shown on its own line when available.
+    const rateHtml = p.min_interest_rate != null
+      ? `<div class="bt-rate">${p.min_interest_rate}<span>% p.a.</span></div>`
+      : '';
+
     // Show only the first feature from top_2_features
     const features = (Array.isArray(p.top_2_features) && p.top_2_features.length)
       ? [p.top_2_features[0]]
-      : [
-          p.min_interest_rate != null ? p.min_interest_rate + '% p.a.' : null,
-        ].filter(Boolean);
+      : [];
 
     const featuresHtml = features.length
       ? `<div class="bt-features">${features.map(f => `<div class="bt-feature">${f}</div>`).join('')}</div>`
@@ -2800,6 +2806,7 @@ async function renderLoanTiles() {
       <div class="bank-tile" data-partner-type="loan" data-partner-index="${idx}" onclick="openPartnerPopup('loan', ${idx})" role="button" tabindex="0">
         ${badgeHtml}
         <div class="bt-logo">${logo}</div>
+        ${rateHtml}
         ${featuresHtml}
       </div>
     `;
