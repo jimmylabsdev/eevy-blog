@@ -2675,6 +2675,16 @@ async function buildEVRecommendations() {
     cont.appendChild(card);
   });
 
+  // Default-select the top pick so something always reaches the Buying Kit
+  // and the DB even if the person never explicitly taps a card — also
+  // gives a visible nudge ("this is picked, tap to change it") rather than
+  // showing nothing selected at all.
+  if (!state.selectedVehicleId && vs.length) {
+    const def = vs.find(v => v.topPick) || vs[0];
+    state.selectedVehicleId = def.id;
+    saveAssessmentV3({ selected_vehicle_id: def.id });
+  }
+
   applyVehicleSelectionHighlight();
 }
 
@@ -2812,6 +2822,12 @@ async function renderLoanTiles() {
     `;
   }).join('');
 
+  if (!state.selectedLoanPartner && visible.length) {
+    const def = visible.find(p => isFeaturedNow(p)) || visible[0];
+    state.selectedLoanPartner = def.bank_name;
+    saveAssessmentV3({ selected_loan_partner: def.bank_name });
+  }
+
   applyPartnerSelectionHighlight();
 }
 
@@ -2885,6 +2901,12 @@ async function renderInsuranceTiles() {
       </div>
     `;
   }).join('');
+
+  if (!state.selectedInsurancePartner && visible.length) {
+    const def = visible.find(p => p.featured) || visible[0];
+    state.selectedInsurancePartner = def.company_name;
+    saveAssessmentV3({ selected_insurance_partner: def.company_name });
+  }
 
   applyPartnerSelectionHighlight();
 }
