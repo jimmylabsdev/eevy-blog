@@ -800,6 +800,41 @@
     .freetext-wrap input::placeholder { color:var(--ink-5); }
     .freetext-wrap input:focus { border-color:var(--orange-dark); }
 
+    .reward-links-title{
+        margin-top:18px;
+        margin-bottom:10px;
+        text-align:center;
+        color:var(--ink-3);
+        font-size:.9rem;
+        font-weight:700;
+    }
+
+    .reward-links{
+        display:flex;
+        flex-wrap:wrap;
+        justify-content:center;
+        gap:10px;
+    }
+
+    .reward-links .chip{
+        display:inline-flex;
+        align-items:center;
+        justify-content:center;
+        padding:10px 16px;
+        border-radius:999px;
+        background:#fff;
+        border:1.5px solid var(--brand);
+        color:var(--brand);
+        text-decoration:none;
+        font-size:.92rem;
+        font-weight:700;
+        transition:.2s ease;
+    }
+
+    .reward-links .chip:hover{
+        background:var(--brand);
+        color:#fff;
+    }
   </style>
 </head>
 <body>
@@ -940,18 +975,25 @@
   <div class="vehicle-cards" id="ev-budget-cards" style="gap:10px;padding-top:16px"></div>
   <div class="reward-cta">
     <div class="insight-card">
-      <p id="ev-budget-insight">🎉 Great start!
-
-We found 5 EVs within your budget.
-
-Let's now rank them based on your lifestyle, driving needs and home.
+      <p id="ev-budget-insight">🎉 Great start! We found 5 EVs within your budget. Let's now rank them based on your lifestyle, driving needs and home.</p>
     </div>
     <button class="btn btn-primary" onclick="startMatchMyNeeds()" style="font-size:1.0625rem;padding:18px 28px">
       Reveal My Top 3 EVs
       <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
     </button>
-    <p class="next-stage-hint">Takes about 30 seconds more • Personalized for you</p>
+    <!-- <p class="reward-links-title">You can also check -</p>
+
+    <div class="reward-links">
+      <a href="#" class="chip">Loan & EMI</a>
+      <a href="#" class="chip">Insurance</a>
+      <a href="#" class="chip">Home Charging</a>
+      <a href="#" class="chip">Dealer Guide</a>
+    </div> -->
+    <p class="next-stage-hint">Next: <strong>Top 3 EVs → Loans & EMI → Insurance → Charging → Showroom</strong></p>
   </div>
+  <p class="t-small text-center" style="margin-top:6px;opacity:0.7">
+      © 2026 eevy.india. All rights reserved
+    </p><br>
 </div>
 
 <!-- ================================================================
@@ -978,8 +1020,11 @@ Let's now rank them based on your lifestyle, driving needs and home.
       Can I Afford This EV?
       <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
     </button>
-    <p class="next-stage-hint">Next: <strong>Affordability → Insurance → Charging → Showroom</strong></p>
+    <p class="next-stage-hint">Next: <strong>Loan & EMI → Insurance → Charging → Showroom</strong></p>
   </div>
+  <p class="t-small text-center" style="margin-top:6px;opacity:0.7">
+      © 2026 eevy.india. All rights reserved
+    </p><br>
 </div>
 
 <!-- ================================================================
@@ -1079,6 +1124,9 @@ Let's now rank them based on your lifestyle, driving needs and home.
     </button>
     <p class="t-small text-center" style="margin-top:12px;color:var(--ink-5)">All cost figures are indicative estimates for the lowest variant.</p>
   </div>
+  <p class="t-small text-center" style="margin-top:6px;opacity:0.7">
+      © 2026 eevy.india. All rights reserved
+    </p><br>
 </div>
 
 <!-- ================================================================
@@ -1149,6 +1197,9 @@ Let's now rank them based on your lifestyle, driving needs and home.
     </button>
     <p class="next-stage-hint">Next: <strong>Charging → Showroom</strong></p>
   </div>
+  <p class="t-small text-center" style="margin-top:6px;opacity:0.7">
+      © 2026 eevy.india. All rights reserved
+    </p><br>
 </div>
 
 <!-- ================================================================
@@ -1177,6 +1228,9 @@ Let's now rank them based on your lifestyle, driving needs and home.
     </button>
     <p class="next-stage-hint">Next: <strong>Showroom</strong> — last step before your Buying Kit</p>
   </div>
+  <p class="t-small text-center" style="margin-top:6px;opacity:0.7">
+      © 2026 eevy.india. All rights reserved
+    </p><br>
 </div>
 
 <!-- ================================================================
@@ -1205,6 +1259,9 @@ Let's now rank them based on your lifestyle, driving needs and home.
     </button>
     <p class="t-small text-center" style="margin-top:12px">Free · Instant · No spam</p>
   </div>
+  <p class="t-small text-center" style="margin-top:6px;opacity:0.7">
+      © 2026 eevy.india. All rights reserved
+    </p><br>
 </div>
 
 <!-- ================================================================
@@ -1263,6 +1320,9 @@ Let's now rank them based on your lifestyle, driving needs and home.
     </div>
     <p class="t-small text-center" style="margin-top:14px">No spam. Used only to deliver your Buying Kit.</p>
   </div>
+  <p class="t-small text-center" style="margin-top:6px;opacity:0.7">
+      © 2026 eevy.india. All rights reserved
+    </p><br>
 </div>
 
 <!-- ================================================================
@@ -1405,28 +1465,28 @@ const JOURNEY_STAGES = [
           {v:'other_metro',  l:'Another city'},
         ]
       },
-      {
-        id:'current_vehicle',
-        step:'Your current car',
-        text:'What are you driving right now?',
-        opts:[
-          {v:'petrol_hatch', l:'Petrol hatchback or sedan'},
-          {v:'petrol_suv',   l:'Petrol SUV'},
-          {v:'diesel',       l:'Diesel car'},
-          {v:'two_wheeler',  l:'Two-wheeler only'},
-          {v:'no_car',       l:'No car currently'},
-        ]
-      },
-      {
-        id:'replacement_additional',
-        step:'Replacing or adding?',
-        text:'Will this EV replace your current car, or join it?',
-        opts:[
-          {v:'replacing',  l:'Replacing my current car'},
-          {v:'additional', l:'Adding a second car'},
-          {v:'first_car',  l:'This will be our first car'},
-        ]
-      },
+      // {
+      //   id:'current_vehicle',
+      //   step:'Your current car',
+      //   text:'What are you driving right now?',
+      //   opts:[
+      //     {v:'petrol_hatch', l:'Petrol hatchback or sedan'},
+      //     {v:'petrol_suv',   l:'Petrol SUV'},
+      //     {v:'diesel',       l:'Diesel car'},
+      //     {v:'two_wheeler',  l:'Two-wheeler only'},
+      //     {v:'no_car',       l:'No car currently'},
+      //   ]
+      // },
+      // {
+      //   id:'replacement_additional',
+      //   step:'Replacing or adding?',
+      //   text:'Will this EV replace your current car, or join it?',
+      //   opts:[
+      //     {v:'replacing',  l:'Replacing my current car'},
+      //     {v:'additional', l:'Adding a second car'},
+      //     {v:'first_car',  l:'This will be our first car'},
+      //   ]
+      // },
     ]
   },
   {
@@ -1812,7 +1872,11 @@ function startJourney() {
   state.sessionId = genId();
   state.currentStageIdx = 0;
   state.currentQIdx = 0;
-  state.answers = {};
+  // state.answers = {};
+  state.answers = {
+    current_vehicle: 'not_provided',
+    replacement_additional: 'not_provided'
+  };
   console.log('[eevy v3] Session:', state.sessionId);
 
   initJourneyBar();
@@ -1844,7 +1908,8 @@ function renderQuestion() {
   const qStepEl = document.getElementById('q-step');
   if (qStepEl) qStepEl.textContent = q.step;
   document.getElementById('q-text').textContent = q.text;
-  document.getElementById('q-counter').textContent = `${overallDone + qNum} of ${overallTotal}`;
+  // document.getElementById('q-counter').textContent = `${overallDone + qNum} of ${overallTotal}`;
+  document.getElementById('q-counter').textContent = q.step;
 
   // Next button label
   const isLastQ = (state.currentStageIdx === JOURNEY_STAGES.length - 1) && isLastQuestionInStage();
@@ -2554,8 +2619,8 @@ async function buildBudgetMatchList() {
   document.getElementById('ev-budget-count').textContent = budgetVehicles.length + ' EVs in your range';
   document.getElementById('ev-budget-sub').textContent = `All EVs available ${budgetLabel} in India right now.`;
   document.getElementById('ev-budget-insight').textContent = budgetVehicles.length > 0
-    ? `We've found ${budgetVehicles.length} EV${budgetVehicles.length === 1 ? '' : 's'} that fit you. Answer a few quick questions and we'll rank them based on your lifestyle, home, and driving needs.`
-    : `We couldn't find an exact match ${budgetLabel} — here are the closest options instead. Answer a few quick questions and we'll rank the best fits.`;
+  ? `Great start! We found ${budgetVehicles.length} EV${budgetVehicles.length === 1 ? '' : 's'} within your budget. Let's now identify the one that best fits your lifestyle, home and driving needs.`
+  : `We couldn't find an exact match ${budgetLabel} — here are the closest options. Let's identify the best fit for your lifestyle, home and driving needs.`;
 
   const cont = document.getElementById('ev-budget-cards');
   cont.innerHTML = '';
