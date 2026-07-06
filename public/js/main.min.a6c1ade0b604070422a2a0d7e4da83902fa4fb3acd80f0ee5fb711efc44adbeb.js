@@ -1,6 +1,0 @@
-(function(){"use strict";var e,t,n=document.querySelector("[data-theme-toggle]");n&&n.addEventListener("click",function(){var t=document.documentElement.getAttribute("data-theme")||"light",e=t==="dark"?"light":"dark";document.documentElement.setAttribute("data-theme",e);try{localStorage.setItem("theme",e)}catch{}}),t=document.querySelector("[data-nav-toggle]"),e=document.querySelector(".nav-list"),t&&e&&(t.addEventListener("click",function(){e.classList.toggle("is-open")}),e.querySelectorAll("a").forEach(function(t){t.addEventListener("click",function(){e.classList.remove("is-open")})}))})();function calculateEV(){const c=document.getElementById("km").value,d=document.getElementById("petrol").value,l=document.getElementById("efficiency").value,o=document.getElementById("electricity").value,i=document.getElementById("evcost").value,e=c*30,a=d/40,r=o/l,s=e*a,n=e*r,t=s-n,u=t*12,h=i/u;document.getElementById("result").innerHTML=`
-    <p><strong>Monthly Petrol Cost:</strong> ₹${s.toFixed(0)}</p>
-    <p><strong>Monthly EV Cost:</strong> ₹${n.toFixed(0)}</p>
-    <p><strong>Monthly Savings:</strong> ₹${t.toFixed(0)}</p>
-    <p><strong>Break-even:</strong> ${h.toFixed(1)} years</p>
-  `}
