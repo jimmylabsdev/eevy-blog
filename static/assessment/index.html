@@ -17,34 +17,36 @@
     :root {
       --teal: #0D9488;
       --orange: #F06A22;
-      --orange-light: #FEF3EC;
-      --orange-mid: #FDCFAD;
-      --orange-dark: #C45516;
-      --orange-glow: rgba(240,106,34,0.12);
-      --ink: #1A1A1A;
-      --ink-2: #3D3D3D;
-      --ink-3: #6B6B6B;
-      --ink-4: #9A9A9A;
-      --ink-5: #C4C4C4;
-      --rule: #EBEBEB;
-      --rule-soft: #F3F3F1;
-      --surface: #FFFFFF;
-      --bg: #F6F5F3;
-      --bg-warm: #FAF9F7;
-      --green: #1A7A4A;
-      --green-light: #E8F5EE;
-      --blue: #1E5FA8;
-      --blue-light: #EBF2FB;
+      --orange-light: rgba(240,106,34,0.14);
+      --orange-mid: rgba(240,106,34,0.42);
+      --orange-dark: #FFA36B;
+      --orange-glow: rgba(240,106,34,0.22);
+      --ink: #F5F4F2;
+      --ink-2: rgba(245,244,242,0.82);
+      --ink-3: rgba(245,244,242,0.60);
+      --ink-4: rgba(245,244,242,0.42);
+      --ink-5: rgba(245,244,242,0.26);
+      --rule: rgba(255,255,255,0.14);
+      --rule-soft: rgba(255,255,255,0.08);
+      --surface: linear-gradient(155deg, #232323 0%, #1B1B1B 100%);
+      --surface-alt: #262626;
+      --brand: var(--orange);
+      --bg: #121212;
+      --bg-warm: #121212;
+      --green: #34D399;
+      --green-light: rgba(52,211,153,0.14);
+      --blue: #60A5FA;
+      --blue-light: rgba(96,165,250,0.14);
       --radius-sm: 10px;
       --radius-md: 16px;
       --radius-lg: 24px;
-      --shadow-card: 0 1px 4px rgba(0,0,0,.05), 0 6px 20px rgba(0,0,0,.05);
-      --shadow-elevated: 0 4px 28px rgba(0,0,0,.10);
-      --shadow-orange: 0 4px 20px rgba(240,106,34,0.22);
+      --shadow-card: 0 4px 14px rgba(0,0,0,.45), 0 1px 0 rgba(255,255,255,.04) inset;
+      --shadow-elevated: 0 10px 30px rgba(0,0,0,.55), 0 2px 10px rgba(0,0,0,.35), 0 1px 0 rgba(255,255,255,.06) inset;
+      --shadow-orange: 0 4px 22px rgba(240,106,34,0.32);
       --tr: 0.22s cubic-bezier(0.4,0,0.2,1);
       --font: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
 
-      /* Landing screen only — dark, premium variant */
+      /* Landing screen — dark, premium variant (now the site-wide baseline) */
       --land-bg-1: #1E1E1E;
       --land-bg-2: #0A0A0A;
       --land-text: #F5F4F2;
@@ -61,7 +63,8 @@
     html { font-size: 16px; scroll-behavior: smooth; }
     body {
       font-family: var(--font);
-      background: var(--bg);
+      background: radial-gradient(120% 60% at 50% -8%, #262626 0%, var(--land-bg-1) 42%, var(--land-bg-2) 100%);
+      background-attachment: fixed;
       color: var(--ink);
       -webkit-font-smoothing: antialiased;
       min-height: 100dvh;
@@ -96,7 +99,8 @@
     ========================================================= */
     .journey-bar {
       position:fixed; top:64px; left:0; right:0; z-index:190;
-      background:var(--bg);
+      background:rgba(10,10,10,0.55);
+      backdrop-filter:blur(14px); -webkit-backdrop-filter:blur(14px);
       padding:10px 16px 10px;
       display:none;
     }
@@ -121,7 +125,8 @@
     ========================================================= */
     .nav {
       position:fixed; top:0; left:0; right:0; z-index:200;
-      background:var(--surface); border-bottom:1px solid var(--rule-soft);
+      background:rgba(10,10,10,0.55); border-bottom:1px solid rgba(255,255,255,0.07);
+      backdrop-filter:blur(14px); -webkit-backdrop-filter:blur(14px);
       box-sizing:border-box;
     }
     .nav-inner {
@@ -167,12 +172,6 @@
     }
     .btn-pill:hover { border-color:var(--orange-mid); background:var(--orange-light); color:var(--orange-dark); box-shadow:none; }
     .btn-pill.selected { border-color:var(--orange); background:var(--orange-light); color:var(--orange-dark); box-shadow:none; }
-    .opt-dot {
-      width:18px; height:18px; border-radius:50%; border:2px solid var(--ink-5);
-      flex-shrink:0; transition:all var(--tr); display:flex; align-items:center; justify-content:center;
-    }
-    .btn-pill.selected .opt-dot { background:var(--orange); border-color:var(--orange); }
-    .btn-pill.selected .opt-dot::after { content:''; width:6px; height:6px; border-radius:50%; background:#fff; }
 
     /* =========================================================
        STAGE BADGE
@@ -320,7 +319,7 @@
     /* =========================================================
        REWARD SCREENS
     ========================================================= */
-    .reward-screen { background:var(--bg-warm); }
+    .reward-screen { background:transparent; }
     .reward-hero { padding:4px 24px 0; max-width:480px; margin:0 auto; }
     .matched-tag {
       display:inline-flex; align-items:center; gap:6px;
@@ -344,7 +343,7 @@
     .vehicle-card.top-pick { border-color:var(--orange); }
     .vehicle-img {
       width:100%; height:180px;
-      background:linear-gradient(145deg,#F2EFEA 0%,#E9E4DB 100%);
+      background:linear-gradient(145deg,#232323 0%,#181818 100%);
       display:flex; align-items:center; justify-content:center;
       position:relative; overflow:hidden;
     }
@@ -394,19 +393,19 @@
 
     /* Vehicle detail popup */
     .vehicle-popup-overlay {
-      display:none; position:fixed; inset:0; background:rgba(20,16,12,0.45);
+      display:none; position:fixed; inset:0; background:rgba(0,0,0,0.6);
       z-index:1000; align-items:flex-end; justify-content:center;
     }
     .vehicle-popup-overlay.is-open { display:flex; }
     .vehicle-popup {
-      width:100%; max-width:420px; background:#fff; border-radius:20px 20px 0 0;
+      width:100%; max-width:420px; background:var(--surface); border:1px solid var(--rule); border-bottom:none; border-radius:20px 20px 0 0;
       padding:0 20px 16px; box-sizing:border-box; position:relative;
-      max-height:88vh; overflow-y:auto;
+      max-height:88vh; overflow-y:auto; box-shadow:var(--shadow-elevated);
       animation:partnerPopupIn .2s ease-out;
     }
     .vehicle-popup-img-wrap {
       width:calc(100% + 40px); margin:0 -20px 14px; height:180px;
-      background:linear-gradient(145deg,#F2EFEA 0%,#E9E4DB 100%);
+      background:linear-gradient(145deg,#232323 0%,#181818 100%);
       display:flex; align-items:center; justify-content:center; overflow:hidden;
       border-radius:20px 20px 0 0;
     }
@@ -512,7 +511,7 @@
     /* =========================================================
        LEAD CAPTURE (Stage 7)
     ========================================================= */
-    #screen-lead { background:var(--bg-warm); }
+    #screen-lead { background:transparent; }
     .lead-body { padding:4px 24px 64px; max-width:480px; margin:0 auto; }
     .lead-kit-preview {
       background:var(--surface); border-radius:var(--radius-lg); overflow:hidden;
@@ -520,7 +519,7 @@
       margin-bottom:28px;
     }
     .lkp-header {
-      background:linear-gradient(135deg, var(--ink) 0%, #2D2D2D 100%);
+      background:linear-gradient(135deg, #1A1A1A 0%, #2D2D2D 100%);
       padding:20px 20px 16px;
     }
     .lkp-logo { font-size:0.75rem; font-weight:700; color:rgba(255,255,255,0.5); letter-spacing:0.06em; text-transform:uppercase; margin-bottom:8px; }
@@ -543,13 +542,13 @@
     .form-input::placeholder { color:var(--ink-5); }
     .form-input:focus { border-color:var(--orange); box-shadow:0 0 0 3px var(--orange-glow); }
     .form-input.error { border-color:#E24B4A; }
-    .form-error { font-size:0.75rem; color:#A32D2D; margin-top:5px; display:none; }
+    .form-error { font-size:0.75rem; color:#FF8A8A; margin-top:5px; display:none; }
     .form-input.error + .form-error { display:block; }
 
     /* =========================================================
        BUYING KIT (Final screen)
     ========================================================= */
-    #screen-kit { background:var(--bg-warm); }
+    #screen-kit { background:transparent; }
     .kit-header { padding:32px 24px 20px; max-width:480px; margin:0 auto; }
     .kit-title-row { display:flex; align-items:center; justify-content:space-between; margin-bottom:6px; }
     .kit-sections { padding:8px 24px 20px; max-width:480px; margin:0 auto; display:flex; flex-direction:column; gap:12px; }
@@ -633,7 +632,7 @@
     .bank-tiles-row::-webkit-scrollbar { display:none; }
     .bank-tile {
       flex-shrink:0; width:112px; min-height:104px; height:auto;
-      background:#fff; border:1px solid var(--rule-soft);
+      background:#fff; border:1px solid rgba(0,0,0,0.08);
       border-radius:10px; padding:10px 8px 9px;
       box-shadow:0 1px 3px rgba(0,0,0,0.07);
       display:flex; flex-direction:column; align-items:center; justify-content:flex-start; text-align:center;
@@ -656,22 +655,22 @@
       margin-bottom:6px; background:transparent; flex-shrink:0;
     }
     .bt-logo img { width:100%; height:100%; object-fit:contain; }
-    .bt-rate { font-size:0.8125rem; font-weight:800; color:var(--ink); letter-spacing:-0.02em; line-height:1; margin-top:2px; }
-    .bt-rate span { font-size:0.5rem; font-weight:600; color:var(--ink-4); }
-    .bt-meta { font-size:0.4375rem; color:var(--ink-5); margin-top:2px; line-height:1.3; }
+    .bt-rate { font-size:0.8125rem; font-weight:800; color:#1A1A1A; letter-spacing:-0.02em; line-height:1; margin-top:2px; }
+    .bt-rate span { font-size:0.5rem; font-weight:600; color:#9A9A9A; }
+    .bt-meta { font-size:0.4375rem; color:#C4C4C4; margin-top:2px; line-height:1.3; }
     .bank-tiles-disclaimer {
       font-size:0.5rem; color:var(--ink-5); padding:5px 24px 0;
       line-height:1.5; font-style:italic;
     }
     .bt-features { display:flex; flex-direction:column; gap:2px; margin-top:6px; width:100%; }
     .bt-feature {
-      font-size:0.6875rem; font-weight:600; color:var(--ink-2);
+      font-size:0.6875rem; font-weight:600; color:#3D3D3D;
       line-height:1.3; text-align:center;
     }
     /* Insurance tiles reuse .bank-tile structure */
     .ins-covers { display:flex; flex-direction:column; gap:2px; margin-top:4px; width:100%; }
     .ins-cover {
-      font-size:0.3125rem; font-weight:400; color:var(--ink-3);
+      font-size:0.3125rem; font-weight:400; color:#6B6B6B;
       background:transparent; border:none;
       padding:0; line-height:1.35; text-align:center;
     }
@@ -693,23 +692,23 @@
 
     /* Partner detail popup */
     .partner-popup-overlay {
-      display:none; position:fixed; inset:0; background:rgba(20,16,12,0.45);
+      display:none; position:fixed; inset:0; background:rgba(0,0,0,0.6);
       z-index:1000; align-items:flex-end; justify-content:center;
     }
     .partner-popup-overlay.is-open { display:flex; }
     .partner-popup {
-      width:100%; max-width:420px; background:#fff; border-radius:20px 20px 0 0;
+      width:100%; max-width:420px; background:var(--surface); border:1px solid var(--rule); border-bottom:none; border-radius:20px 20px 0 0;
       padding:20px 20px 16px; box-sizing:border-box; position:relative;
-      max-height:80vh; overflow-y:auto;
+      max-height:80vh; overflow-y:auto; box-shadow:var(--shadow-elevated);
       animation:partnerPopupIn .2s ease-out;
     }
     @keyframes partnerPopupIn { from { transform:translateY(24px); opacity:0; } to { transform:translateY(0); opacity:1; } }
     .partner-popup-close {
       position:absolute; top:14px; right:14px; width:28px; height:28px; border-radius:50%;
-      border:none; background:var(--rule-soft, #EFEAE3); color:var(--ink-3, #6B6259);
+      border:none; background:var(--surface-alt); color:var(--ink-3);
       font-size:1rem; line-height:1; cursor:pointer; display:flex; align-items:center; justify-content:center;
     }
-    .partner-popup-close:hover { background:var(--ink-5,#B7AFA4); color:#fff; }
+    .partner-popup-close:hover { background:var(--ink-5); color:var(--ink); }
     .partner-popup-header {
       display:flex; align-items:center; gap:12px; margin:4px 32px 14px 0;
     }
@@ -745,7 +744,7 @@
       box-shadow:var(--shadow-orange);
     }
     .partner-popup-select:hover { background:var(--orange-dark,#C45516); }
-    .partner-popup-select.is-selected-btn { background:#065F46; box-shadow:none; }
+    .partner-popup-select.is-selected-btn { background:#0E9F6E; box-shadow:none; }
 
 
     .budget-ev-card {
@@ -790,15 +789,26 @@
     .slider-hint { font-size:0.75rem; color:var(--ink-4); margin-top:5px; }
     .affordability-single { padding:4px 24px 48px; max-width:480px; margin:0 auto; }
 
-    .freetext-wrap { margin-top:10px; animation:fadeUp 0.22s ease both; }
+    .freetext-wrap { margin-top:10px; animation:fadeUp 0.22s ease both; display:flex; align-items:center; gap:8px; }
     .freetext-wrap input {
-      width:100%; padding:14px 16px; border:1.5px solid var(--orange);
+      flex:1 1 auto; min-width:0; padding:14px 16px; border:1.5px solid var(--orange);
       border-radius:var(--radius-sm); font-family:var(--font); font-size:1rem; color:var(--ink);
       background:var(--surface); outline:none; box-shadow:0 0 0 3px var(--orange-glow);
       transition:border-color var(--tr), box-shadow var(--tr);
     }
     .freetext-wrap input::placeholder { color:var(--ink-5); }
     .freetext-wrap input:focus { border-color:var(--orange-dark); }
+    .freetext-submit {
+      flex-shrink:0; width:48px; height:48px; border-radius:50%; border:none;
+      background:var(--orange); color:#fff; cursor:pointer;
+      display:flex; align-items:center; justify-content:center;
+      box-shadow:var(--shadow-orange); transition:var(--tr);
+    }
+    .freetext-submit:hover:not(:disabled) { background:var(--orange-dark); }
+    .freetext-submit:disabled { background:var(--ink-5); box-shadow:none; cursor:not-allowed; }
+
+    /* Options briefly lock while a choice is transitioning to the next question */
+    .btn-pill.is-disabled { pointer-events:none; opacity:0.55; }
 
     .reward-links-title{
         margin-top:18px;
@@ -822,9 +832,9 @@
         justify-content:center;
         padding:10px 16px;
         border-radius:999px;
-        background:#fff;
-        border:1.5px solid var(--brand);
-        color:var(--brand);
+        background:var(--orange-light);
+        border:1.5px solid var(--orange-mid);
+        color:var(--orange-dark);
         text-decoration:none;
         font-size:.92rem;
         font-weight:700;
@@ -863,11 +873,11 @@
 </div>
   <div class="landing-hero">
     <div class="eyebrow fade-up" style="animation-delay:.05s"><span class="e-dot"></span>Built for Indian EV buyers</div>
-    <h1 class="fade-up" style="animation-delay:.12s">Find Your<br><em>Top 5 EVs</em><!--<br>For You--></h1>
-    <p class="landing-sub fade-up" style="animation-delay:.2s">Simply answer a few quick questions <br>Get your Top 5 EV matches based on your budget, driving habits and lifestyle</p>
+    <h1 class="fade-up" style="animation-delay:.12s">Find<br><em>The Best EV</em><br>For You</h1>
+    <p class="landing-sub fade-up" style="animation-delay:.2s">Buying an EV is different.<br>We'll help you find the best one that fits your budget, driving habits and everyday lifestyle.</p>
     <div class="fade-up" style="animation-delay:.28s;margin-bottom:22px">
       <button class="btn btn-primary" onclick="startJourney()" style="font-size:1.0625rem;padding:18px 28px">
-        Show My Top 5 EVs
+        Start
         <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
       </button>
     </div>
@@ -934,10 +944,6 @@
     <!-- <span class="q-step" id="q-step"></span> -->
     <h2 class="t-display" id="q-text"></h2>
     <div class="options-list" id="q-opts"></div>
-    <button class="btn btn-primary" id="q-next" onclick="questionNext()" disabled>
-      <span id="q-next-lbl">Continue</span>
-      <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
-    </button>
   </div>
 </div>
 
@@ -1911,11 +1917,6 @@ function renderQuestion() {
   // document.getElementById('q-counter').textContent = `${overallDone + qNum} of ${overallTotal}`;
   document.getElementById('q-counter').textContent = q.step;
 
-  // Next button label
-  const isLastQ = (state.currentStageIdx === JOURNEY_STAGES.length - 1) && isLastQuestionInStage();
-  let lbl = (isLastQuestionInStage() && q.id !== 'payment_mode') ? 'See My Results' : 'Continue';
-  document.getElementById('q-next-lbl').textContent = lbl;
-
   updateJourneyBar(state.currentStageIdx);
   renderOptions();
 }
@@ -1930,34 +1931,57 @@ function renderOptions() {
     const btn = document.createElement('button');
     btn.className = 'btn btn-pill' + (saved === opt.v ? ' selected' : '');
     btn.dataset.value = opt.v;
-    btn.innerHTML = `<span>${opt.l}</span><span class="opt-dot"></span>`;
+    btn.innerHTML = `<span>${opt.l}</span>`;
     btn.addEventListener('click', () => selectOption(q.id, opt.v));
     container.appendChild(btn);
   });
 
-  // Freetext follow-up
+  // Freetext follow-up — this is the one question type that needs typed
+  // input, so it gets its own small submit affordance + Enter-to-continue
+  // instead of auto-advancing on tap like every other question.
   if (q.freetext) {
     const wrap = document.createElement('div');
     wrap.className = 'freetext-wrap';
     wrap.id = 'q-freetext-wrap';
-    wrap.style.display = (saved === q.freetext.triggerValue) ? 'block' : 'none';
+    wrap.style.display = (saved === q.freetext.triggerValue) ? 'flex' : 'none';
+
     const inp = document.createElement('input');
     inp.type = 'text';
     inp.className = 'form-input';
     inp.placeholder = q.freetext.placeholder;
     inp.value = state.answers[q.freetext.stateKey] || '';
+
+    const submitBtn = document.createElement('button');
+    submitBtn.type = 'button';
+    submitBtn.className = 'freetext-submit';
+    submitBtn.disabled = !inp.value.trim();
+    submitBtn.setAttribute('aria-label', 'Continue');
+    submitBtn.innerHTML = '<svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M12 5l7 7-7 7"/></svg>';
+
     inp.addEventListener('input', e => {
       state.answers[q.freetext.stateKey] = e.target.value.trim();
-      document.getElementById('q-next').disabled = !e.target.value.trim();
+      submitBtn.disabled = !e.target.value.trim();
     });
+    inp.addEventListener('keydown', e => {
+      if (e.key === 'Enter' && e.target.value.trim()) {
+        e.preventDefault();
+        advanceAfterSelect();
+      }
+    });
+    submitBtn.addEventListener('click', () => {
+      if (inp.value.trim()) advanceAfterSelect();
+    });
+
     wrap.appendChild(inp);
+    wrap.appendChild(submitBtn);
     container.appendChild(wrap);
   }
-
-  document.getElementById('q-next').disabled = !saved;
 }
 
+let isAdvancingQuestion = false;
+
 function selectOption(qId, value) {
+  if (isAdvancingQuestion) return; // ignore taps while the previous choice is transitioning
   const q = currentQuestion();
   state.answers[qId] = value;
 
@@ -1971,9 +1995,10 @@ function selectOption(qId, value) {
     const wrap = document.getElementById('q-freetext-wrap');
     if (wrap) {
       if (value === q.freetext.triggerValue) {
-        wrap.style.display = 'block';
+        wrap.style.display = 'flex';
         const inp = wrap.querySelector('input');
-        if (inp) { inp.focus(); inp.dispatchEvent(new Event('input')); return; }
+        if (inp) { inp.focus(); inp.dispatchEvent(new Event('input')); }
+        return; // waiting on typed input — don't auto-advance yet
       } else {
         wrap.style.display = 'none';
         delete state.answers[q.freetext.stateKey];
@@ -1981,7 +2006,23 @@ function selectOption(qId, value) {
     }
   }
 
-  document.getElementById('q-next').disabled = false;
+  advanceAfterSelect();
+}
+
+// Briefly shows the selected state, locks out further taps, then moves on.
+// Purely a local/UI delay — advancing between questions never touches the
+// network, so this pause is the same regardless of connection speed. The
+// only network calls happen at the end of a stage, inside questionNext(),
+// which already routes through the "Analysing..." screen for that.
+function advanceAfterSelect() {
+  isAdvancingQuestion = true;
+  document.querySelectorAll('#q-opts .btn-pill').forEach(b => b.classList.add('is-disabled'));
+  const submitBtn = document.querySelector('.freetext-submit');
+  if (submitBtn) submitBtn.disabled = true;
+  setTimeout(() => {
+    isAdvancingQuestion = false;
+    questionNext();
+  }, 300);
 }
 
 function questionBack() {
