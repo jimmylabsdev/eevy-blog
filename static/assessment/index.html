@@ -936,7 +936,12 @@
 <div id="screen-question" class="screen">
   <div class="nav has-bar">
   <div class="nav-inner">
-    <div class="nav-left"><span class="nav-logo">eevy<span class="dot">.</span>india</span></div>
+    <div class="nav-left">
+      <button class="back-btn" id="q-back-btn" onclick="questionBack()" aria-label="Back" title="Back">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 18l-6-6 6-6"/></svg>
+      </button>
+      <span class="nav-logo">eevy<span class="dot">.</span>india</span>
+    </div>
     <span class="t-micro" id="q-counter"></span>
   </div>
 </div>
@@ -969,7 +974,12 @@
 <div id="screen-reward-ev-budget" class="screen reward-screen">
   <div class="nav">
   <div class="nav-inner">
-    <div class="nav-left"><span class="nav-logo">eevy<span class="dot">.</span>india</span></div>
+    <div class="nav-left">
+      <button class="back-btn" onclick="backFromBudgetReward()" aria-label="Back" title="Back">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 18l-6-6 6-6"/></svg>
+      </button>
+      <span class="nav-logo">eevy<span class="dot">.</span>india</span>
+    </div>
     <span class="t-small" style="color:var(--ink-4);font-weight:500">Budget matches</span>
   </div>
 </div>
@@ -984,7 +994,7 @@
       <p id="ev-budget-insight">🎉 Great start! We found 5 EVs within your budget. Let's now rank them based on your lifestyle, driving needs and home.</p>
     </div>
     <button class="btn btn-primary" onclick="startMatchMyNeeds()" style="font-size:1.0625rem;padding:18px 28px">
-      Reveal My Top 3 EVs
+      Find My Ideal EV
       <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
     </button>
     <!-- <p class="reward-links-title">You can also check -</p>
@@ -1008,7 +1018,12 @@
 <div id="screen-reward-ev" class="screen reward-screen">
   <div class="nav">
   <div class="nav-inner">
-    <div class="nav-left"><span class="nav-logo">eevy<span class="dot">.</span>india</span></div>
+    <div class="nav-left">
+      <button class="back-btn" onclick="backFromTop3Reward()" aria-label="Back" title="Back">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 18l-6-6 6-6"/></svg>
+      </button>
+      <span class="nav-logo">eevy<span class="dot">.</span>india</span>
+    </div>
     <span class="t-small" style="color:var(--ink-4);font-weight:500" id="ev-reward-label">Your shortlist</span>
   </div>
 </div>
@@ -1023,7 +1038,7 @@
       <p>Great choice. Let's estimate your on-road price, monthly EMI, insurance, and running costs in about 90 seconds.</p>
     </div>
     <button class="btn btn-primary" onclick="startStage3()" style="font-size:1.0625rem;padding:18px 28px">
-      Can I Afford This EV?
+      Select & Proceed
       <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
     </button>
     <p class="next-stage-hint">Next: <strong>Loan & EMI → Insurance → Charging → Showroom</strong></p>
@@ -1528,11 +1543,11 @@ const JOURNEY_STAGES = [
         step:'What matters most?',
         text:'What matters most to you in an EV?',
         opts:[
-          {v:'range',       l:'Maximum range — zero range anxiety'},
-          {v:'performance', l:'Performance and driving feel'},
-          {v:'space',       l:'Cabin space and comfort'},
-          {v:'tech',        l:'Technology and features'},
-          {v:'value',       l:'Best value for money'},
+          {v:'range',       l:'Maximum range'},
+          {v:'performance', l:'Performance'},
+          {v:'space',       l:'Cabin space'},
+          {v:'tech',        l:'Tech - ADAS, ReGen, Touchscreen'},
+          {v:'value',       l:'Value for money'},
         ]
       },
       {
@@ -1540,10 +1555,9 @@ const JOURNEY_STAGES = [
         step:'Where you live',
         text:'What type of home do you live in?',
         opts:[
-          {v:'apartment',            l:'Apartment — gated society'},
-          {v:'apartment_standalone', l:'Apartment — standalone building'},
-          {v:'independent',          l:'Independent house or villa'},
-          {v:'gated_villa',          l:'Villa in a gated community'},
+          {v:'apartment',            l:'Apartment'},
+          {v:'independent',          l:'Independent house'},
+          {v:'gated_villa',          l:'Villa'},
           {v:'farmhouse',            l:'Farmhouse / farm property'},
         ]
       },
@@ -1917,6 +1931,9 @@ function renderQuestion() {
   // document.getElementById('q-counter').textContent = `${overallDone + qNum} of ${overallTotal}`;
   document.getElementById('q-counter').textContent = q.step;
 
+  const qBackBtn = document.getElementById('q-back-btn');
+  if (qBackBtn) qBackBtn.classList.toggle('inv', isFirstQuestion());
+
   updateJourneyBar(state.currentStageIdx);
   renderOptions();
 }
@@ -2038,6 +2055,24 @@ function questionBack() {
     hideJourneyBar();
     showScreen('screen-landing');
   }
+}
+
+function backFromBudgetReward() {
+  // "Top 5 EVs" screen back -> last question of the ev-profile stage (City)
+  const idx = JOURNEY_STAGES.findIndex(s => s.id === 'ev-profile');
+  state.currentStageIdx = idx;
+  state.currentQIdx = JOURNEY_STAGES[idx].questions.length - 1;
+  renderQuestion();
+  showScreen('screen-question');
+}
+
+function backFromTop3Reward() {
+  // "Top 3 EVs" screen back -> last question of the personalise stage (Where you live)
+  const idx = JOURNEY_STAGES.findIndex(s => s.id === 'personalise');
+  state.currentStageIdx = idx;
+  state.currentQIdx = JOURNEY_STAGES[idx].questions.length - 1;
+  renderQuestion();
+  showScreen('screen-question');
 }
 
 function questionNext() {
@@ -2660,7 +2695,7 @@ async function buildBudgetMatchList() {
   document.getElementById('ev-budget-count').textContent = budgetVehicles.length + ' EVs in your range';
   document.getElementById('ev-budget-sub').textContent = `All EVs available ${budgetLabel} in India right now.`;
   document.getElementById('ev-budget-insight').textContent = budgetVehicles.length > 0
-  ? `Great start! We found ${budgetVehicles.length} EV${budgetVehicles.length === 1 ? '' : 's'} within your budget. Let's now identify the one that best fits your lifestyle, home and driving needs.`
+  ? `Great start! We found ${budgetVehicles.length} EV${budgetVehicles.length === 1 ? '' : 's'} that fit your budget. But which one will you still love driving 6 months from now? Let's find out.`
   : `We couldn't find an exact match ${budgetLabel} — here are the closest options. Let's identify the best fit for your lifestyle, home and driving needs.`;
 
   const cont = document.getElementById('ev-budget-cards');
