@@ -761,6 +761,26 @@
     .bec-specs { font-size:0.75rem; color:var(--ink-4); margin-top:2px; }
     .bec-badge { background:var(--blue-light); color:var(--blue); font-size:0.6875rem; font-weight:700; padding:4px 9px; border-radius:100px; flex-shrink:0; white-space:nowrap; }
 
+    /* Tickable budget-match cards — up to 5 of up to 10 */
+    .budget-ev-card.is-pickable { cursor:pointer; }
+    .budget-ev-card.is-picked { border-color:var(--green); box-shadow:0 0 0 2px var(--green-light); }
+    .budget-ev-card.is-capped-out { opacity:0.42; pointer-events:none; }
+    .bec-tick {
+      width:24px; height:24px; border-radius:50%; flex-shrink:0;
+      border:2px solid var(--ink-4); display:flex; align-items:center; justify-content:center;
+      transition:var(--tr); background:transparent;
+    }
+    .budget-ev-card.is-picked .bec-tick {
+      background:var(--green); border-color:var(--green);
+    }
+    .bec-tick svg { opacity:0; transition:var(--tr); }
+    .budget-ev-card.is-picked .bec-tick svg { opacity:1; }
+    .budget-fetch-error {
+      background:var(--surface-alt); border:1px solid var(--rule); border-radius:var(--radius-md);
+      padding:20px; text-align:center; color:var(--ink-3); font-size:0.875rem;
+    }
+    .budget-fetch-error button { margin-top:12px; }
+
     /* Stage next hint below CTA */
     .next-stage-hint { text-align:center; margin-top:12px; font-size:0.8125rem; color:var(--ink-4); }
     .next-stage-hint strong { color:var(--ink-3); }
@@ -1002,17 +1022,17 @@
   </div>
 </div>
   <div class="reward-hero">
-    <div class="matched-tag"><span class="m-dot"></span><span id="ev-budget-count">உங்கள் பட்ஜெட்டில் டாப் 5 EVs</span></div>
-    <h2 class="t-display">உங்கள் பட்ஜெட்டில் உள்ள EVs</h2>
-    <p class="t-small" style="margin-top:6px" id="ev-budget-sub">இந்தியாவில் உங்கள் விலை வரம்பில் கிடைக்கும் அனைத்து EVs.</p>
+    <div class="matched-tag"><span class="m-dot"></span><span id="ev-budget-count">உங்கள் வரம்பில் உள்ள EVs</span></div>
+    <h2 class="t-display">உங்கள் பட்ஜெட்டில் சிறந்த EVs</h2>
+    <p class="t-small" style="margin-top:6px" id="ev-budget-sub">இந்தியாவில் உங்கள் விலை வரம்பில் கிடைக்கும் தேர்ந்தெடுக்கப்பட்ட EVs பட்டியல்.</p>
   </div>
   <div class="vehicle-cards" id="ev-budget-cards" style="gap:10px;padding-top:16px"></div>
   <div class="reward-cta">
     <div class="insight-card">
-      <p id="ev-budget-insight">🎉 சூப்பர்! உங்கள் பட்ஜெட்டில் இந்த 5 EVs கிடைக்கும். ஆனால் இந்த 5-ல் எது உங்கள் lifestyle-க்கு பொருத்தமானது? வாங்க பார்க்கலாம்.</p>
+      <p id="ev-budget-insight">🎉 சூப்பர்! ஒப்பிட விரும்பும் 5 EVs வரை தேர்ந்தெடுங்கள் — உங்கள் lifestyle, ஓட்டும் தேவைகள் மற்றும் வீட்டைப் பொருத்து அடுத்து தரவரிசைப்படுத்துவோம்.</p>
     </div>
-    <button class="btn btn-primary" onclick="startMatchMyNeeds()" style="font-size:1.0625rem;padding:18px 28px">
-      உங்கள் lifestyle-க்கு ஏற்ற EV
+    <button class="btn btn-primary" id="budget-continue-btn" onclick="startMatchMyNeeds()" style="font-size:1.0625rem;padding:18px 28px" disabled>
+      <span id="budget-continue-label">5 EVs வரை தேர்ந்தெடுக்கவும்</span>
       <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
     </button>
     <!-- <p class="reward-links-title">You can also check -</p>
@@ -1740,6 +1760,16 @@ const state = {
   _vehicles: null,
   _readiness: 0,
 
+  // Vehicle catalogue — fetched once from the DB when the budget-match
+  // screen builds, then reused locally (band filtering, shortlisting,
+  // Top-3 scoring) for the rest of the session. Never re-fetched.
+  _catalogue: null,
+
+  // The up-to-5 cards the user ticks on the budget-match screen.
+  // Purely client-side — never written to the DB. Only the eventual
+  // single selected_vehicle_id (below) gets persisted, same as before.
+  _shortlist: [],
+
   // Lead
   lead: {},
 
@@ -1788,6 +1818,16 @@ function derived() {
    UTILITIES
 ================================================================ */
 function genId() { return 'eevy_' + Date.now() + '_' + Math.random().toString(36).slice(2,8); }
+
+/* Guard called before every server call. navigator.onLine is a coarse
+   signal (it can't detect "connected but broken"), but it catches the
+   common case — airplane mode, wifi dropped — cheaply and instantly,
+   without spending a request to find out. */
+function checkNetwork() {
+  if (typeof navigator !== 'undefined' && navigator.onLine === false) {
+    throw new Error('NETWORK_OFFLINE');
+  }
+}
 
 /* ================================================================
    ANALYTICS EVENTS (GA4)
@@ -2312,6 +2352,13 @@ function submitAffordabilityIncome() {
 }
 
 function startMatchMyNeeds() {
+  // Defensive — the Continue button is disabled until the selection rule
+  // is met, but guard here too in case it's triggered some other way.
+  const total = (state._budgetVehicles || []).length;
+  const need5 = total > 5;
+  if (need5 && state._shortlist.length !== 5) return;
+  if (!need5 && state._shortlist.length === 0) return;
+
   assmt_top5_continue();
   state.currentStageIdx = JOURNEY_STAGES.findIndex(s => s.id === 'personalise');
   state.currentQIdx = 0;
@@ -2628,11 +2675,12 @@ const ALL_VEHICLES = [
   },
 ];
 
-/* Budget range → which vehicles to show as the initial budget-matched list */
-/* Vehicles eligible for recommendation: must be active, and — once the
-   is_featured column is populated in the source table — must be featured.
-   Forward-compatible: if no vehicle has is_featured set yet, the flag is
-   ignored so the catalogue keeps working unchanged. */
+/* ================================================================
+   DEPRECATED — kept in place, unused, not deleted (per Ram: mark,
+   don't remove, so nothing that still references these breaks).
+   Superseded by fetchVehicleCatalogue() + the budget-band logic below,
+   which reads the live DB instead of this hardcoded set.
+================================================================ */
 function activeFeaturedVehicles() {
   const anyFeaturedFlag = ALL_VEHICLES.some(v => v.is_featured !== undefined && v.is_featured !== null);
   return ALL_VEHICLES.filter(v => v.active !== false && (!anyFeaturedFlag || v.is_featured === true));
@@ -2642,43 +2690,11 @@ function getBudgetVehicles(budget) {
   const budgetOrder = { under_10: 0, '10_15': 1, '15_25': 2, '25_40': 3, above_40: 4 };
   const targetIdx = budgetOrder[budget] ?? 1;
   const pool = activeFeaturedVehicles();
-
-  // Progressively widen the tier window until we find something, rather than a
-  // fixed ±1 window. A fixed window silently returns nothing for the top tier
-  // when the catalogue has no vehicle that expensive — exactly what happens for
-  // "above ₹40 lakh" today, since the priciest EV in the catalogue is ~₹22L.
   for (let radius = 1; radius <= 4; radius++) {
     const matches = pool.filter(v => Math.abs((budgetOrder[v.priceRange] ?? 1) - targetIdx) <= radius);
     if (matches.length > 0) return matches.slice(0, 5);
   }
-  return pool.slice(0, 5); // last resort — catalogue isn't empty, show something rather than nothing
-}
-
-/* Score each vehicle for the refined recommendations */
-function scoreVehicle(v, a) {
-  let score = 50;
-  // Budget fit
-  const budgetOrder = { under_10: 0, '10_15': 1, '15_25': 2, '25_40': 3, above_40: 4 };
-  const vi = budgetOrder[v.priceRange] ?? 1;
-  const bi = budgetOrder[a.budget] ?? 1;
-  if (vi === bi) score += 20;
-  else if (Math.abs(vi - bi) === 1) score += 10;
-  // Usage fit — match against the vehicle's tagged usage types
-  const usage = Array.isArray(v.good_for_usage) ? v.good_for_usage : [];
-  if (a.usage && usage.includes(a.usage)) score += 12;
-  else if (a.usage === 'highway' && v.battery_kwh >= 50) score += 8;
-  else if (a.usage === 'mixed' && v.battery_kwh >= 35) score += 6;
-  // Priority fit
-  if (a.priority === 'range' && v.score_range >= 7) score += 10;
-  if (a.priority === 'value' && v.score_value >= 7) score += 10;
-  if (a.priority === 'space' && v.score_space >= 7) score += 8;
-  if (a.priority === 'tech' && v.score_tech >= 7) score += 8;
-  if (a.priority === 'performance' && v.score_performance >= 7) score += 8;
-  // Daily distance
-  const dailyMid = { under_30:20, '30_60':45, '60_100':80, above_100:130 };
-  const km = dailyMid[a.daily_distance] || 50;
-  if (v.battery_kwh > 0 && (v.battery_kwh * 5) > km * 1.5) score += 5; // >1.5x daily range
-  return Math.min(99, score);
+  return pool.slice(0, 5);
 }
 
 const FALLBACK_VEHICLES = [
@@ -2705,38 +2721,10 @@ const FALLBACK_VEHICLES = [
   },
 ];
 
-async function buildBudgetMatchList() {
-  const a = state.answers;
-  const budgetVehicles = getBudgetVehicles(a.budget);
-  state._budgetVehicles = budgetVehicles;
-
-  const budgetLabels = { under_10:'₹10 லட்சத்திற்கும் குறைவாக', '10_15':'₹10–15 லட்சம்', '15_25':'₹15–25 லட்சம்', '25_40':'₹25–40 லட்சம்', above_40:'₹40 லட்சத்திற்கும் மேல்' };
-  const budgetLabel = budgetLabels[a.budget] || 'உங்கள் பட்ஜெட்';
-
-  document.getElementById('ev-budget-count').textContent = budgetVehicles.length + ' EVs உங்கள் பட்ஜெட்டில்';
-  document.getElementById('ev-budget-sub').textContent = `தற்போது இந்தியாவில் ${budgetLabel} கிடைக்கும் EVs`;
-  document.getElementById('ev-budget-insight').textContent = budgetVehicles.length > 0
-  ? `சூப்பர்! உங்கள் பட்ஜெட்டில் இந்த ${budgetVehicles.length} EV${budgetVehicles.length === 1 ? '' : 's'} கிடைக்கும். ஆனால் இந்த ${budgetVehicles.length}-ல் எது உங்கள் lifestyle-க்கு பொருத்தமானது? வாங்க பார்க்கலாம்.`
-  : `${budgetLabel} சரியான பொருத்தம் கிடைக்கவில்லை — நெருங்கிய தேர்வுகள் இதோ. உங்கள் வாழ்க்கை முறை, வீடு, ஓட்டும் தேவைகளுக்கு சிறந்த பொருத்தத்தை கண்டறிவோம்.`;
-
-  const cont = document.getElementById('ev-budget-cards');
-  cont.innerHTML = '';
-  budgetVehicles.forEach((v, idx) => {
-    const card = document.createElement('div');
-    card.className = 'budget-ev-card';
-    card.innerHTML = `
-      <div class="bec-rank">${idx + 1}</div>
-      <div class="bec-info">
-        <div class="bec-brand">${v.brand}</div>
-        <div class="bec-model">${v.model}</div>
-        <div class="bec-specs">${v.price} &nbsp;·&nbsp; ${v.range} ரேஞ்ச்</div>
-      </div>
-      <div class="bec-badge">${v.battery_kwh}kWh</div>
-    `;
-    cont.appendChild(card);
-  });
-}
-
+/* DEPRECATED — server-side scoring path. Superseded by scoreVehicle()
+   + buildWhyText() being called client-side in buildEVRecommendations()
+   against the user's own 5 shortlisted cars. Left in place, unused,
+   in case anything else still calls /api/v3/recommend directly. */
 async function getRecommendedVehicles() {
   try {
     const a = state.answers;
@@ -2761,29 +2749,207 @@ async function getRecommendedVehicles() {
   }
 }
 
+/* ================================================================
+   BUDGET BANDS — real min/max overlap, not a one-sided ceiling.
+   A vehicle qualifies for a tier if its price range overlaps that
+   tier's band at all — matches the SQL Ram validated directly
+   against Supabase (price_max >= lo AND price_min <= hi).
+================================================================ */
+const BUDGET_BANDS = {
+  under_10: [0, 10],
+  '10_15':  [10, 15],
+  '15_25':  [15, 25],
+  '25_40':  [25, 40],
+  above_40: [40, 9999],
+};
+
+function vehiclesInBudgetBand(catalogue, budget) {
+  const band = BUDGET_BANDS[budget] || BUDGET_BANDS['10_15'];
+  const [lo, hi] = band;
+  return catalogue
+    .filter(v => v.price_max >= lo && v.price_min <= hi)
+    .sort((a, b) => a.price_min - b.price_min);
+}
+
+/* Score each vehicle for the refined recommendations */
+function scoreVehicle(v, a) {
+  let score = 50;
+  // Usage fit — match against the vehicle's tagged usage types
+  const usage = Array.isArray(v.good_for_usage) ? v.good_for_usage : [];
+  if (a.usage && usage.includes(a.usage)) score += 12;
+  else if (a.usage === 'highway' && v.battery_kwh >= 50) score += 8;
+  else if (a.usage === 'mixed' && v.battery_kwh >= 35) score += 6;
+  // Priority fit
+  if (a.priority === 'range' && v.score_range >= 7) score += 10;
+  if (a.priority === 'value' && v.score_value >= 7) score += 10;
+  if (a.priority === 'space' && v.score_space >= 7) score += 8;
+  if (a.priority === 'tech' && v.score_tech >= 7) score += 8;
+  if (a.priority === 'performance' && v.score_performance >= 7) score += 8;
+  // Daily distance
+  const dailyMid = { under_30:20, '30_60':45, '60_100':80, above_100:130 };
+  const km = dailyMid[a.daily_distance] || 50;
+  if (v.battery_kwh > 0 && (v.battery_kwh * 5) > km * 1.5) score += 5; // >1.5x daily range
+  return Math.min(99, score);
+}
+
+/* Ported from the worker's old buildWhy() — English, matching the
+   worker's own behaviour (the shared worker only ever generated this
+   copy in English, regardless of assessment language, before this
+   rebuild too — so this is unchanged behaviour, not a new regression).
+   Flagged separately with Ram as a possible follow-up localisation item. */
+function buildWhyText(v, a) {
+  const rangeFloor = { under_30: 75, '30_60': 150, '60_100': 250, above_100: 350 }[a.daily_distance] || 150;
+  const headroom = (v.range_realworld_km || 0) - rangeFloor;
+  const usageLabel = {
+    city_commute: 'city commuting', family: 'family use',
+    highway: 'highway driving', mixed: 'mixed city and highway use',
+  }[a.usage] || 'your driving needs';
+
+  const priorityLines = {
+    range:       `${v.range_realworld_km} km real-world range — ${headroom} km above your daily buffer.`,
+    performance: `Strong performance figures and instant torque for a confident drive.`,
+    space:       `Generous cabin and ${v.boot_litres ? v.boot_litres + ' L boot' : 'practical boot'} for ${usageLabel}.`,
+    tech:        `${v.score_tech >= 9 ? 'Class-leading' : 'Strong'} tech package with connected features and ADAS.`,
+    value:       `Excellent value at ₹${v.price_min}–${v.price_max} L with ${v.range_realworld_km} km real-world range.`,
+  }[a.priority] || v.highlight || '';
+
+  return `${priorityLines} ${v.highlight || ''}`.trim();
+}
+
+/* ================================================================
+   BUDGET-MATCH SCREEN — buildBudgetMatchList()
+
+   Fetches the live catalogue ONCE (state._catalogue), filters to the
+   user's budget band, shows up to 10 sorted by price. ≤5 matches →
+   all auto-included, Continue enables immediately. >5 → user must
+   tick exactly 5 to proceed.
+================================================================ */
+async function buildBudgetMatchList() {
+  const a = state.answers;
+  const cont = document.getElementById('ev-budget-cards');
+  cont.innerHTML = '';
+
+  if (!state._catalogue) {
+    try {
+      state._catalogue = await fetchVehicleCatalogue();
+    } catch (e) {
+      renderBudgetFetchError();
+      return;
+    }
+  }
+
+  const bandVehicles = vehiclesInBudgetBand(state._catalogue, a.budget).slice(0, 10);
+  state._budgetVehicles = bandVehicles;
+  state._shortlist = [];
+
+  const budgetLabels = { under_10:'₹10 லட்சத்திற்கும் குறைவாக', '10_15':'₹10–15 லட்சத்தில்', '15_25':'₹15–25 லட்சத்தில்', '25_40':'₹25–40 லட்சத்தில்', above_40:'₹40 லட்சத்திற்கும் மேல்' };
+  const budgetLabel = budgetLabels[a.budget] || 'உங்கள் பட்ஜெட்டில்';
+  const autoIncludeAll = bandVehicles.length <= 5;
+
+  document.getElementById('ev-budget-count').textContent = bandVehicles.length + ' EVs உங்கள் வரம்பில்';
+  document.getElementById('ev-budget-sub').textContent = `தற்போது இந்தியாவில் ${budgetLabel} கிடைக்கும் தேர்ந்தெடுக்கப்பட்ட EVs பட்டியல்.`;
+  document.getElementById('ev-budget-insight').textContent = autoIncludeAll
+    ? `${budgetLabel} கிடைக்கும் ${bandVehicles.length} EV${bandVehicles.length === 1 ? '' : 's'} கண்டறிந்தோம் — அனைத்தும் கீழே சேர்க்கப்பட்டுள்ளன. அடுத்து இவற்றை தரவரிசைப்படுத்துவோம்.`
+    : `ஒப்பிட விரும்பும் 5 EVs வரை தேர்ந்தெடுங்கள் — உங்கள் lifestyle, ஓட்டும் தேவைகள் மற்றும் வீட்டைப் பொருத்து அடுத்து தரவரிசைப்படுத்துவோம்.`;
+
+  bandVehicles.forEach((v, idx) => {
+    const card = document.createElement('div');
+    card.className = 'budget-ev-card' + (autoIncludeAll ? ' is-picked' : ' is-pickable');
+    card.innerHTML = `
+      <div class="bec-tick"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg></div>
+      <div class="bec-info">
+        <div class="bec-brand">${v.brand}</div>
+        <div class="bec-model">${v.model}</div>
+        <div class="bec-specs">${v.price} &nbsp;·&nbsp; ${v.range} ரேஞ்ச்</div>
+      </div>
+      <div class="bec-badge">${v.battery_kwh}kWh</div>
+    `;
+    if (autoIncludeAll) {
+      state._shortlist.push(v);
+    } else {
+      card.addEventListener('click', () => toggleShortlistPick(v, card));
+    }
+    cont.appendChild(card);
+  });
+
+  updateBudgetContinueState();
+}
+
+function renderBudgetFetchError() {
+  const cont = document.getElementById('ev-budget-cards');
+  cont.innerHTML = `
+    <div class="budget-fetch-error">
+      <p>உங்கள் பட்ஜெட்டில் EVs-ஐ ஏற்ற முடியவில்லை — தயவுசெய்து உங்கள் நெட்வொர்க்கை சரிபார்த்து மீண்டும் முயற்சிக்கவும்.</p>
+      <button class="btn btn-secondary" onclick="retryBudgetFetch()">மீண்டும் முயற்சி</button>
+    </div>`;
+  const btn = document.getElementById('budget-continue-btn');
+  if (btn) btn.disabled = true;
+}
+
+function retryBudgetFetch() {
+  state._catalogue = null; // force a fresh fetch attempt
+  buildBudgetMatchList();
+}
+
+function toggleShortlistPick(v, cardEl) {
+  const idx = state._shortlist.findIndex(x => x.id === v.id);
+  if (idx >= 0) {
+    state._shortlist.splice(idx, 1);
+    cardEl.classList.remove('is-picked');
+  } else {
+    if (state._shortlist.length >= 5) return; // capped — ignore
+    state._shortlist.push(v);
+    cardEl.classList.add('is-picked');
+  }
+  updateBudgetContinueState();
+}
+
+function updateBudgetContinueState() {
+  const btn = document.getElementById('budget-continue-btn');
+  const label = document.getElementById('budget-continue-label');
+  if (!btn || !label) return;
+
+  const count = state._shortlist.length;
+  const total = (state._budgetVehicles || []).length;
+  const autoIncludeAll = total <= 5;
+
+  if (autoIncludeAll) {
+    btn.disabled = total === 0;
+    label.textContent = 'உங்கள் lifestyle-க்கு ஏற்ற EV';
+  } else {
+    btn.disabled = count !== 5;
+    label.textContent = count === 5 ? 'உங்கள் lifestyle-க்கு ஏற்ற EV' : `${count} / 5 EVs தேர்ந்தெடுக்கப்பட்டது`;
+  }
+
+  // Grey out remaining unpicked cards once the cap is hit
+  document.querySelectorAll('#ev-budget-cards .budget-ev-card.is-pickable').forEach(card => {
+    const isPicked = card.classList.contains('is-picked');
+    card.classList.toggle('is-capped-out', count >= 5 && !isPicked);
+  });
+}
+
+/* ================================================================
+   TOP 3 — buildEVRecommendations()
+
+   No more DB round-trip here — the 5 shortlisted cars from the
+   budget screen already carry everything needed. Scores them
+   locally against usage/priority/daily_distance and keeps the
+   best 3, same weighting as before.
+================================================================ */
 async function buildEVRecommendations() {
   const a = state.answers;
-  // Get API recommendations or fall back to scoring from ALL_VEHICLES
-  let vs = await getRecommendedVehicles();
+  const pool = state._shortlist && state._shortlist.length ? state._shortlist : (state._budgetVehicles || []);
 
-  // If we got back FALLBACK_VEHICLES (generic), score from our catalogue instead
-  if (!vs || vs === FALLBACK_VEHICLES) {
-    const budgetPool = getBudgetVehicles(a.budget);
-    // Widen pool if too small
-    const pool = budgetPool.length >= 3 ? budgetPool : activeFeaturedVehicles().filter(v => {
-      const order = { under_10:0,'10_15':1,'15_25':2,'25_40':3,above_40:4 };
-      return (order[v.priceRange] ?? 1) <= (order[a.budget] ?? 1) + 1;
-    });
-    vs = pool.map(v => ({ ...v, matchPct: scoreVehicle(v, a) }))
-             .sort((a, b) => b.matchPct - a.matchPct)
-             .slice(0, 3)
-             .map((v, i) => ({ ...v, topPick: i === 0 }));
-  }
+  const vs = pool
+    .map(v => ({ ...v, matchPct: Math.max(70, scoreVehicle(v, a)) }))
+    .sort((x, y) => y.matchPct - x.matchPct)
+    .slice(0, 3)
+    .map((v, i) => ({ ...v, topPick: i === 0, why: buildWhyText(v, a) }));
 
   state._vehicles = vs;
 
   document.getElementById('ev-reward-sub').textContent =
-    'உங்கள் lifestyle அடிப்படையில் பட்ஜெட் பட்டியலிலிருந்து, உங்களுக்கு ஏற்ற 3 EV-கள்.';
+    'உங்கள் lifestyle அடிப்படையில் உங்கள் தேர்ந்தெடுக்கப்பட்ட பட்டியலிலிருந்து, உங்களுக்கு ஏற்ற 3 EV-கள்.';
   document.getElementById('ev-matched-text').textContent = 'பொருத்தமான 3 EVs';
 
   const cont = document.getElementById('ev-vehicle-cards');
@@ -2832,7 +2998,7 @@ async function buildEVRecommendations() {
       <div class="v-model">${v.model}</div>
       <div class="v-specs">
         <div><span class="spec-label">Ex-showroom</span><span class="spec-value">${v.price}</span></div>
-        <div><span class="spec-label">குறிப்பிடப்பட்ட ரேஞ்ச்</span><span class="spec-value">${v.range}</span></div>
+        <div><span class="spec-label">குறிப்பிடப்பட்ட ரேஞ்ச்</span><span class="spec-value">${v.range_rated || v.range}</span></div>
       </div>
       <p class="v-why">${v.why}</p>`;
 
@@ -3346,8 +3512,8 @@ function buildChargingReadiness() {
 async function buildDealerChecklist() {
   const a = state.answers;
   const d = derived();
-  const vs = state._vehicles || await getRecommendedVehicles();
-  state._vehicles = vs;
+  if (!state._vehicles || !state._vehicles.length) await buildEVRecommendations();
+  const vs = state._vehicles;
 
   const isApartment = ['apartment', 'apartment_standalone', 'gated_villa'].includes(a.residence);
   const isRenter = a.own_rent === 'rent';
@@ -3452,8 +3618,8 @@ function pickedVehicle(vs) {
 async function buildBuyingKit() {
   const a = state.answers;
   const d = derived();
-  const vs = state._vehicles || await getRecommendedVehicles();
-  state._vehicles = vs;
+  if (!state._vehicles || !state._vehicles.length) await buildEVRecommendations();
+  const vs = state._vehicles;
 
   const fn = state.lead.name ? state.lead.name.split(' ')[0] : '';
   const readiness = computeReadiness();
@@ -4122,8 +4288,23 @@ async function shareKit() {
 ================================================================ */
 const API = 'https://eevy.in/api';
 
+/* One-time catalogue fetch — called when the budget-match screen builds.
+   Unlike _post(), this is on the critical path (the screen has nothing
+   to show without it), so checkNetwork's failure propagates instead of
+   being swallowed — the caller is expected to show a retry state. */
+async function fetchVehicleCatalogue() {
+  checkNetwork();
+  const res = await fetch(API + '/v3/vehicles', { method: 'GET' });
+  if (!res.ok) throw new Error('CATALOGUE_FETCH_FAILED');
+  const data = await res.json();
+  const vehicles = data?.result?.vehicles;
+  if (!Array.isArray(vehicles)) throw new Error('CATALOGUE_FETCH_EMPTY');
+  return vehicles;
+}
+
 async function _post(path, payload) {
   try {
+    checkNetwork();
     const res = await fetch(API + path, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
