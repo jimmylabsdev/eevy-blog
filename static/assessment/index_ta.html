@@ -1024,13 +1024,13 @@
   <div class="reward-hero">
     <div class="matched-tag"><span class="m-dot"></span><span id="ev-budget-count">உங்கள் வரம்பில் உள்ள EVs</span></div>
     <h2 class="t-display">உங்கள் பட்ஜெட்டில் சிறந்த EVs</h2>
-    <p class="t-small" style="margin-top:6px" id="ev-budget-sub">இந்தியாவில் உங்கள் விலை வரம்பில் கிடைக்கும் தேர்ந்தெடுக்கப்பட்ட EVs பட்டியல்.</p>
+    <p class="t-small" style="margin-top:6px" id="ev-budget-sub">இந்தியாவில் உங்கள் விலை வரம்பில் கிடைக்கும் தேர்ந்தெடுக்கப்பட்ட EVs பட்டியல்.</p><br>
+    <div class="insight-card">
+      <p id="ev-budget-insight">🎉 சூப்பர்! அடுத்து நீங்கள் விரும்பும் 5 எலக்ட்ரிக் கார்கள் வரை தேர்ந்தெடுங்கள் — உங்கள் lifestyle, ஓட்டும் தேவைகள் மற்றும் வீட்டைப் பொருத்து அடுத்து தரவரிசைப்படுத்துவோம்.</p>
+    </div>
   </div>
   <div class="vehicle-cards" id="ev-budget-cards" style="gap:10px;padding-top:16px"></div>
   <div class="reward-cta">
-    <div class="insight-card">
-      <p id="ev-budget-insight">🎉 சூப்பர்! ஒப்பிட விரும்பும் 5 EVs வரை தேர்ந்தெடுங்கள் — உங்கள் lifestyle, ஓட்டும் தேவைகள் மற்றும் வீட்டைப் பொருத்து அடுத்து தரவரிசைப்படுத்துவோம்.</p>
-    </div>
     <button class="btn btn-primary" id="budget-continue-btn" onclick="startMatchMyNeeds()" style="font-size:1.0625rem;padding:18px 28px" disabled>
       <span id="budget-continue-label">5 EVs வரை தேர்ந்தெடுக்கவும்</span>
       <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
@@ -2849,8 +2849,8 @@ async function buildBudgetMatchList() {
   document.getElementById('ev-budget-count').textContent = bandVehicles.length + ' EVs உங்கள் வரம்பில்';
   document.getElementById('ev-budget-sub').textContent = `தற்போது இந்தியாவில் ${budgetLabel} கிடைக்கும் தேர்ந்தெடுக்கப்பட்ட EVs பட்டியல்.`;
   document.getElementById('ev-budget-insight').textContent = autoIncludeAll
-    ? `${budgetLabel} கிடைக்கும் ${bandVehicles.length} EV${bandVehicles.length === 1 ? '' : 's'} கண்டறிந்தோம் — அனைத்தும் கீழே சேர்க்கப்பட்டுள்ளன. அடுத்து இவற்றை தரவரிசைப்படுத்துவோம்.`
-    : `ஒப்பிட விரும்பும் 5 EVs வரை தேர்ந்தெடுங்கள் — உங்கள் lifestyle, ஓட்டும் தேவைகள் மற்றும் வீட்டைப் பொருத்து அடுத்து தரவரிசைப்படுத்துவோம்.`;
+    ? `${budgetLabel} கிடைக்கும் ${bandVehicles.length} எலக்ட்ரிக் கார்${bandVehicles.length === 1 ? '' : 'கள்'} கண்டறிந்தோம் — அனைத்தும் கீழே சேர்க்கப்பட்டுள்ளன. அடுத்து இவற்றை தரவரிசைப்படுத்துவோம்.`
+    : `அடுத்து நீங்கள் விரும்பும் 5 எலக்ட்ரிக் கார்கள் வரை தேர்ந்தெடுங்கள் — உங்கள் lifestyle, ஓட்டும் தேவைகள் மற்றும் வீட்டைப் பொருத்து அடுத்து தரவரிசைப்படுத்துவோம்.`;
 
   bandVehicles.forEach((v, idx) => {
     const card = document.createElement('div');
