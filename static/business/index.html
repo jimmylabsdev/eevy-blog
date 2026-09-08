@@ -215,6 +215,20 @@
     }
     .radio-option input { accent-color: var(--accent); width: 16px; height: 16px; }
 
+    .consent-field { margin-bottom: 6px; }
+    .consent-option {
+      display: flex; align-items: flex-start; gap: 10px;
+      cursor: pointer;
+      font-size: .84rem; line-height: 1.5;
+      color: var(--muted);
+    }
+    .consent-option input {
+      accent-color: var(--accent);
+      width: 16px; height: 16px;
+      flex-shrink: 0;
+      margin-top: 2px;
+    }
+
     .turnstile-wrap { margin: 20px 0; display: flex; justify-content: center; }
 
     .form-msg {
@@ -340,6 +354,13 @@
           </div>
         </div>
 
+        <div class="field consent-field">
+          <label class="consent-option">
+            <input type="checkbox" id="consent" name="consent" required />
+            <span data-i18n="consent_text">I agree to let eevy contact me regarding my vehicle listing.</span>
+          </label>
+        </div>
+
         <div class="turnstile-wrap">
           <div class="cf-turnstile" data-sitekey="0x4AAAAAAEspXkIXWcB2rygn" data-callback="onTurnstileSuccess"></div>
         </div>
@@ -366,7 +387,7 @@
   const translations = {
     hero_sub_title: {
       en: "Are you a commercial EV dealer or manufacturer?",
-      ta: "நீங்கள் வணிக மின்சார வாகன விற்பனையாளரா அல்லது உற்பத்தியாளரா?"
+      ta: "நீங்கள் மின்சார சரக்கு வாகன விற்பனையாளரா அல்லது உற்பத்தியாளரா?"
     },
     hero_sub: {
       en: "We're building Eevy For Business and would like to evaluate and list your vehicles.",
@@ -378,7 +399,7 @@
     },
     form_lead: {
       en: "Share a few details and we'll reach out to evaluate your vehicle for listing on eevy.",
-      ta: "சில விவரங்களைப் பகிரவும் — உங்கள் வாகனத்தை eevy-இல் பட்டியலிட மதிப்பீடு செய்ய நாங்கள் உங்களைத் தொடர்பு கொள்வோம்."
+      ta: "சில விவரங்களைப் பகிரவும் — உங்கள் மின்சார சரக்கு வாகனத்தை eevy-இல் பட்டியலிட நாங்கள் உங்களைத் தொடர்பு கொள்வோம்."
     },
     label_company: { en: "Company Name", ta: "நிறுவனத்தின் பெயர்" },
     label_contact: { en: "Contact Name", ta: "தொடர்பு நபர் பெயர்" },
@@ -386,6 +407,10 @@
     label_type: { en: "You are a", ta: "நீங்கள் ஒரு" },
     radio_oem: { en: "Vehicle OEM", ta: "வாகன உற்பத்தியாளர் (OEM)" },
     radio_dealership: { en: "Dealership", ta: "விற்பனை நிலையம்" },
+    consent_text: {
+      en: "I agree to let eevy contact me regarding my vehicle listing.",
+      ta: "எனது வாகன பட்டியல் தொடர்பாக eevy என்னைத் தொடர்பு கொள்ள நான் ஒப்புக்கொள்கிறேன்."
+    },
     btn_submit: { en: "Submit", ta: "சமர்ப்பிக்கவும்" },
     btn_submitting: { en: "Submitting...", ta: "சமர்ப்பிக்கிறது..." },
     msg_turnstile: {
@@ -428,61 +453,63 @@
     applyLang();
   });
 
-  // ---- Supabase submission ----
-  import('https://esm.sh/@supabase/supabase-js@2').then(({ createClient }) => {
-    // TODO: replace with your actual Supabase project URL and anon (public) key
+  // ---- Turnstile: register the callback immediately, before the widget can fire ----
+  let turnstileToken = null;
+  window.onTurnstileSuccess = function (token) {
+    turnstileToken = token;
+    const btn = document.getElementById('submit-btn');
+    if (btn) btn.disabled = false;
+  };
+
+  // ---- Supabase client (loaded async; submit handler awaits this) ----
+  const supabaseReady = import('https://esm.sh/@supabase/supabase-js@2').then(({ createClient }) => {
     const SUPABASE_URL = 'https://dvyuqhcmkrmpzrbujmxb.supabase.co';
     const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImR2eXVxaGNta3JtcHpyYnVqbXhiIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODUxNTY1NjksImV4cCI6MjEwMDczMjU2OX0.igNHrQky4l3OADZrU52pbT_PsSKnFHzqcskdJDivnqY';
-    const supabase = createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+    return createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+  });
 
-    let turnstileToken = null;
-    window.onTurnstileSuccess = function (token) {
-      turnstileToken = token;
-      document.getElementById('submit-btn').disabled = false;
+  const form = document.getElementById('business-form');
+  const msg = document.getElementById('form-msg');
+  const submitBtn = document.getElementById('submit-btn');
+
+  form.addEventListener('submit', async (e) => {
+    e.preventDefault();
+    msg.className = 'form-msg';
+    msg.textContent = '';
+
+    if (!turnstileToken) {
+      msg.className = 'form-msg error';
+      msg.textContent = translations.msg_turnstile[currentLang];
+      return;
+    }
+
+    const data = new FormData(form);
+    const payload = {
+      company_name: data.get('company_name').trim(),
+      contact_name: data.get('contact_name').trim(),
+      mobile_number: data.get('mobile_number').trim(),
+      type: data.get('inquirer_type'),
     };
 
-    const form = document.getElementById('business-form');
-    const msg = document.getElementById('form-msg');
-    const submitBtn = document.getElementById('submit-btn');
+    submitBtn.disabled = true;
+    submitBtn.textContent = translations.btn_submitting[currentLang];
 
-    form.addEventListener('submit', async (e) => {
-      e.preventDefault();
-      msg.className = 'form-msg';
-      msg.textContent = '';
+    const supabase = await supabaseReady;
+    const { error } = await supabase
+      .from('commercial_business_inquiries')
+      .insert([payload]);
 
-      if (!turnstileToken) {
-        msg.className = 'form-msg error';
-        msg.textContent = translations.msg_turnstile[currentLang];
-        return;
-      }
+    if (error) {
+      submitBtn.disabled = false;
+      submitBtn.textContent = translations.btn_submit[currentLang];
+      msg.className = 'form-msg error';
+      msg.textContent = translations.msg_error[currentLang];
+      console.error(error);
+      return;
+    }
 
-      const data = new FormData(form);
-      const payload = {
-        company_name: data.get('company_name').trim(),
-        contact_name: data.get('contact_name').trim(),
-        mobile_number: data.get('mobile_number').trim(),
-        type: data.get('inquirer_type'),
-      };
-
-      submitBtn.disabled = true;
-      submitBtn.textContent = translations.btn_submitting[currentLang];
-
-      const { error } = await supabase
-        .from('commercial_business_inquiries')
-        .insert([payload]);
-
-      if (error) {
-        submitBtn.disabled = false;
-        submitBtn.textContent = translations.btn_submit[currentLang];
-        msg.className = 'form-msg error';
-        msg.textContent = translations.msg_error[currentLang];
-        console.error(error);
-        return;
-      }
-
-      document.getElementById('form-view').style.display = 'none';
-      document.getElementById('success-view').style.display = 'block';
-    });
+    document.getElementById('form-view').style.display = 'none';
+    document.getElementById('success-view').style.display = 'block';
   });
 </script>
 
