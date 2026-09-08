@@ -1,0 +1,518 @@
+<!DOCTYPE html>
+<html lang="ta">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Eevy for Business — EV வாகனக் குழு மதிப்பீடு</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Inter:wght@400;500;600;700&family=DM+Sans:wght@500;700&family=IBM+Plex+Mono:wght@500;600&family=Noto+Sans+Tamil:wght@500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg:#0A100E;
+    --bg-alt:#0E1613;
+    --card:#FFFFFF;
+    --card-text:#12211D;
+    --card-dim:#5B6B66;
+    --border-dark:#1D2A26;
+    --text:#F3F6F4;
+    --text-dim:#A9B8B3;
+    --text-faint:#66766F;
+    --accent:#00C08A;
+    --accent-deep:#00A878;
+    --accent-soft:rgba(0,192,138,0.12);
+    --status-ready:#2FBE7D;
+    --status-partial:#E8A33D;
+    --status-no:#7C8A85;
+    --font-display:'Noto Sans Tamil', sans-serif;
+    --font-body:'Noto Sans Tamil', sans-serif;
+    --font-wordmark:'DM Sans', sans-serif;
+    --font-mono:'Noto Sans Tamil', sans-serif;
+  }
+  *{box-sizing:border-box;}
+  html{scroll-behavior:smooth;}
+  body{
+    margin:0;
+    background:var(--bg);
+    color:var(--text);
+    font-family:var(--font-body);
+    -webkit-font-smoothing:antialiased;
+    line-height:1.55;
+  }
+  a{color:inherit;}
+  .wrap{max-width:1080px; margin:0 auto; padding:0 24px;}
+  @media (max-width:600px){.wrap{padding:0 18px;}}
+
+  /* ---------- Header ---------- */
+  header{
+    position:sticky; top:0; z-index:40;
+    background:rgba(10,16,14,0.86);
+    backdrop-filter:blur(10px);
+    border-bottom:1px solid var(--border-dark);
+  }
+  .headrow{
+    display:flex; align-items:center; justify-content:space-between;
+    padding:16px 0;
+    gap:14px;
+  }
+  .brand-lockup{display:flex; align-items:center; gap:9px;}
+  .brand-mark{height:24px; width:auto; display:block;}
+  .wordmark{font-family:var(--font-wordmark); font-weight:700; font-size:19px; letter-spacing:-0.01em; white-space:nowrap;}
+  .wm-light{color:var(--text);}
+  .wm-dot{color:var(--accent-deep);}
+  .header-cta{
+    font-family:var(--font-body); font-weight:600; font-size:13.5px;
+    padding:9px 18px; border-radius:8px;
+    background:var(--accent); color:#052018;
+    text-decoration:none; white-space:nowrap;
+    transition:opacity .15s;
+  }
+  .header-cta:hover{opacity:0.88;}
+
+  /* ---------- Hero ---------- */
+  .hero{padding:76px 0 64px; position:relative; overflow:hidden;}
+  .hero::before{
+    content:''; position:absolute; top:-140px; right:-160px;
+    width:520px; height:520px; border-radius:50%;
+    background:radial-gradient(circle, rgba(0,192,138,0.16), transparent 68%);
+    pointer-events:none;
+  }
+  .eyebrow{
+    font-family:var(--font-mono); font-size:12.5px; letter-spacing:0.14em;
+    color:var(--accent); text-transform:uppercase; margin-bottom:18px;
+  }
+  h1{
+    font-family:var(--font-display); font-weight:600;
+    font-size:44px; line-height:1.14; letter-spacing:-0.01em;
+    max-width:720px; margin:0 0 20px;
+  }
+  @media (max-width:680px){ h1{font-size:32px;} }
+  .hero-sub{
+    font-size:18px; color:var(--text-dim); max-width:600px; margin:0 0 22px; font-weight:500;
+  }
+  .hero-body{
+    font-size:15.5px; color:var(--text-dim); max-width:600px; margin:0 0 34px;
+  }
+  .btn-primary{
+    display:inline-block;
+    font-family:var(--font-body); font-weight:700; font-size:15.5px;
+    padding:15px 30px; border-radius:10px;
+    background:var(--accent); color:#052018;
+    text-decoration:none;
+    transition:transform .15s, opacity .15s;
+  }
+  .btn-primary:hover{opacity:0.9; transform:translateY(-1px);}
+  .hero-note{
+    margin-top:16px; font-size:13px; color:var(--text-faint); font-family:var(--font-mono);
+  }
+  .cta-row{display:flex; gap:14px; flex-wrap:wrap; align-items:center;}
+  .btn-secondary{
+    display:inline-flex; align-items:center; gap:8px;
+    font-family:var(--font-body); font-weight:600; font-size:14.5px;
+    padding:14px 22px; border-radius:10px;
+    background:transparent; border:1px solid var(--text-faint); color:var(--text);
+    text-decoration:none;
+    transition:border-color .15s, color .15s;
+  }
+  .btn-secondary:hover{border-color:var(--accent); color:var(--accent);}
+  .btn-secondary svg{flex-shrink:0;}
+
+  .trust-strip{
+    border-top:1px solid var(--border-dark);
+    border-bottom:1px solid var(--border-dark);
+    background:var(--bg-alt);
+    padding:16px 0;
+  }
+  .trust-row{
+    display:flex; flex-wrap:wrap; gap:10px 28px; align-items:center;
+    font-size:13px; color:var(--text-dim);
+  }
+  .trust-item{display:flex; align-items:center; gap:8px;}
+  .trust-item .dot{width:5px; height:5px; border-radius:50%; background:var(--accent); flex-shrink:0;}
+
+  /* ---------- Section shells ---------- */
+  section{padding:64px 0;}
+  .section-alt{background:var(--bg-alt); border-top:1px solid var(--border-dark); border-bottom:1px solid var(--border-dark);}
+  .section-head{max-width:640px; margin:0 0 40px;}
+  .section-eyebrow{
+    font-family:var(--font-mono); font-size:12px; letter-spacing:0.1em;
+    color:var(--accent); text-transform:uppercase; margin-bottom:12px;
+  }
+  h2{
+    font-family:var(--font-display); font-weight:600; font-size:30px;
+    line-height:1.22; letter-spacing:-0.005em; margin:0 0 14px;
+  }
+  @media (max-width:600px){ h2{font-size:24px;} }
+  .section-desc{font-size:15.5px; color:var(--text-dim); margin:0;}
+
+  /* ---------- Cards ---------- */
+  .grid{display:grid; gap:16px;}
+  .grid-2{grid-template-columns:repeat(2,1fr);}
+  .grid-3{grid-template-columns:repeat(3,1fr);}
+  @media (max-width:760px){
+    .grid-2, .grid-3{grid-template-columns:1fr;}
+  }
+  .card{
+    background:var(--card); color:var(--card-text);
+    border-radius:14px; padding:24px 24px 22px;
+  }
+  .card-icon{font-size:26px; margin-bottom:14px; display:block;}
+  .card h3{
+    font-family:var(--font-display); font-size:16.5px; font-weight:600;
+    margin:0 0 8px; color:var(--card-text);
+  }
+  .card p{font-size:14px; color:var(--card-dim); margin:0; line-height:1.55;}
+
+  /* ---------- Readiness tiers (signature element) ---------- */
+  .tiers{
+    display:flex; border-radius:12px; overflow:hidden; margin-bottom:28px;
+    border:1px solid var(--border-dark);
+  }
+  .tier{flex:1; padding:20px 18px; position:relative;}
+  .tier + .tier{border-left:1px solid rgba(255,255,255,0.08);}
+  .tier-ready{background:rgba(47,190,125,0.14);}
+  .tier-partial{background:rgba(232,163,61,0.13);}
+  .tier-no{background:rgba(124,138,133,0.12);}
+  .tier-dot{
+    width:9px; height:9px; border-radius:50%; margin-bottom:12px;
+  }
+  .tier-ready .tier-dot{background:var(--status-ready);}
+  .tier-partial .tier-dot{background:var(--status-partial);}
+  .tier-no .tier-dot{background:var(--status-no);}
+  .tier-label{
+    font-family:var(--font-mono); font-size:11.5px; letter-spacing:0.06em;
+    text-transform:uppercase; margin-bottom:8px; font-weight:600;
+  }
+  .tier-ready .tier-label{color:var(--status-ready);}
+  .tier-partial .tier-label{color:var(--status-partial);}
+  .tier-no .tier-label{color:var(--status-no);}
+  .tier-desc{font-size:13.5px; color:var(--text-dim); line-height:1.5;}
+  @media (max-width:680px){
+    .tiers{flex-direction:column;}
+    .tier + .tier{border-left:none; border-top:1px solid rgba(255,255,255,0.08);}
+  }
+
+  .deliverables{
+    list-style:none; padding:0; margin:0;
+    display:grid; grid-template-columns:1fr 1fr; gap:10px 24px;
+  }
+  @media (max-width:600px){ .deliverables{grid-template-columns:1fr;} }
+  .deliverables li{
+    font-size:14.5px; color:var(--text-dim);
+    padding-left:20px; position:relative;
+  }
+  .deliverables li::before{
+    content:'';
+    position:absolute; left:0; top:8px;
+    width:7px; height:7px; border-radius:50%;
+    background:var(--accent);
+  }
+
+  /* ---------- Pricing / mode cards ---------- */
+  .mode-card{
+    background:var(--card); color:var(--card-text);
+    border-radius:16px; padding:30px 28px; display:flex; flex-direction:column;
+  }
+  .mode-price{
+    font-family:var(--font-mono); font-size:12.5px; color:var(--accent-deep);
+    margin-bottom:10px; font-weight:600;
+  }
+  .mode-card h3{
+    font-family:var(--font-display); font-size:20px; font-weight:600; margin:0 0 10px;
+  }
+  .mode-card p{font-size:14.5px; color:var(--card-dim); margin:0 0 22px; flex-grow:1;}
+  .mode-card .btn-mode{
+    display:inline-block; text-align:center;
+    font-family:var(--font-body); font-weight:700; font-size:14.5px;
+    padding:13px 20px; border-radius:9px; text-decoration:none;
+  }
+  .mode-card.featured .btn-mode{background:var(--accent-deep); color:#fff;}
+  .mode-card.plain{background:var(--bg-alt); color:var(--text); border:1px solid var(--border-dark);}
+  .mode-card.plain .mode-price{color:var(--accent);}
+  .mode-card.plain p{color:var(--text-dim);}
+  .mode-card.plain .btn-mode{background:transparent; border:1px solid var(--text-faint); color:var(--text);}
+
+  /* ---------- Deployment strip ---------- */
+  .deploy{
+    display:flex; align-items:center; gap:36px; flex-wrap:wrap;
+  }
+  .deploy-copy{flex:1; min-width:280px;}
+  .deploy-copy p{font-size:15px; color:var(--text-dim); margin:0 0 10px;}
+  .deploy-tag{
+    font-family:var(--font-mono); font-size:12px; color:var(--accent);
+    letter-spacing:0.06em; text-transform:uppercase;
+  }
+
+  /* ---------- Final CTA ---------- */
+  .finalcta{
+    text-align:center; padding:84px 0 90px;
+    background:
+      radial-gradient(circle at 50% 0%, rgba(0,192,138,0.14), transparent 60%),
+      var(--bg);
+  }
+  .finalcta h2{font-size:32px; max-width:560px; margin:0 auto 14px;}
+  @media (max-width:600px){ .finalcta h2{font-size:24px;} }
+  .finalcta .section-desc{max-width:480px; margin:0 auto 30px;}
+
+  /* ---------- Footer ---------- */
+  footer{
+    border-top:1px solid var(--border-dark);
+    padding:28px 0 34px;
+  }
+  .footnote{
+    font-size:12.5px; color:var(--text-faint); line-height:1.6; max-width:760px;
+  }
+  .copyright{
+    font-family:var(--font-mono); font-size:11px; color:var(--text-faint);
+    margin-top:14px;
+  }
+
+  /* ---------- FAQ ---------- */
+  .faq-list{display:flex; flex-direction:column; gap:0;}
+  .faq-item{
+    padding:20px 0;
+    border-bottom:1px solid var(--border-dark);
+  }
+  .faq-item:first-child{padding-top:0;}
+  .faq-q{
+    font-family:var(--font-display); font-weight:600; font-size:16px;
+    margin:0 0 8px; color:var(--text);
+  }
+  .faq-a{font-size:14.5px; color:var(--text-dim); margin:0; max-width:640px;}
+</style>
+</head>
+<body>
+
+<header>
+  <div class="wrap headrow">
+    <div class="brand-lockup">
+      <img class="brand-mark" src="data:image/png;base64,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" alt="">
+      <span class="wordmark"><span class="wm-light">eevy</span><span class="wm-dot">.</span><span class="wm-light">India</span></span>
+    </div>
+    <a class="header-cta" href="eevy-fleet-assessment.html">வாகனக் குழுவை மதிப்பீடு செய்யுங்கள்</a>
+  </div>
+</header>
+
+<section class="hero">
+  <div class="wrap">
+    <div class="eyebrow">Eevy for Business</div>
+    <h1>உங்கள் வணிகம் மின்சார வாகனங்களுக்கு மாற தயாரா?</h1>
+    <p class="hero-sub">உங்கள் வணிக வாகனங்களை மின்சார வாகனமாக்க என்ன தேவை என்பதையும், அது நிதி ரீதியாகப் பலனளிக்குமா என்பதையும் துல்லியமாக அறியுங்கள்.</p>
+    <p class="hero-body">உங்கள் தற்போதைய வாகனங்கள், பாதைகள், பயன்பாடு, இயக்கச் செலவுகள் மற்றும் சார்ஜிங் தேவைகளை ஈவி பகுப்பாய்வு செய்து, உங்கள் வணிகத்திற்கான நடைமுறைக்கு சாத்தியமான EV Fleet Transition Plan-ஐத் நாங்கள் தயார் செய்து தருகிறோம்.</p>
+    <div class="cta-row">
+      <a class="btn-primary" href="eevy-fleet-assessment.html">வாகனக் குழுவை மதிப்பீடு செய்யுங்கள்</a>
+      <a class="btn-secondary" href="https://wa.me/91XXXXXXXXXX?text=Hi%2C%20I%27d%20like%20to%20know%20more%20about%20the%20Eevy%20Fleet%20Assessment" target="_blank" rel="noopener">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"/></svg>
+        WhatsApp-ல் எங்களிடம் பேச
+      </a>
+    </div>
+    <div class="hero-note">₹<s>5,000</s> இலவசம் — வெறும் முதல் 30 வணிகங்களுக்கு</div>
+  </div>
+</section>
+
+<div class="trust-strip">
+  <div class="wrap trust-row">
+    <div class="trust-item"><span class="dot"></span>Eevy India Pvt Ltd — பதிவு செய்யப்பட்ட இந்திய நிறுவனம்</div>
+    <div class="trust-item"><span class="dot"></span>அழையுங்கள் அல்லது WhatsApp செய்யுங்கள் +91-XXXXXXXXXX</div>
+    <div class="trust-item"><span class="dot"></span>உங்கள் வாகனத் தரவு உங்கள் திட்டத்தைத் தயாரிக்க மட்டுமே பயன்படுத்தப்படும்</div>
+  </div>
+</div>
+
+<section class="section-alt">
+  <div class="wrap">
+    <div class="section-head">
+      <div class="section-eyebrow">சிக்கல்</div>
+      <h2>யூகிப்பதை நிறுத்துங்கள். உங்கள் வாகனக் குழுவிலிருந்து தொடங்குங்கள்.</h2>
+      <p class="section-desc">EV-க்கு மாறுவது என்பது வெறுமனே ஒரு டீசல் வாகனத்தை மின்சார வாகனத்தால் மாற்றுவது மட்டுமல்ல. நீங்கள் அறிய வேண்டியவை:</p>
+    </div>
+    <div class="grid grid-2">
+      <div class="card">
+        <h3>எந்த வாகனங்கள் மாறக்கூடும்?</h3>
+        <p>ஒவ்வொரு வாகனமும் அல்லது பாதையும் EV-க்குத் தயாராக இருக்காது.</p>
+      </div>
+      <div class="card">
+        <h3>அவை எப்படி சார்ஜ் செய்யப்படும்?</h3>
+        <p>உங்கள் இயக்க அட்டவணை மற்றும் சார்ஜிங் தேவைகளை நாங்கள் மதிப்பீடு செய்கிறோம்.</p>
+      </div>
+      <div class="card">
+        <h3>நீங்கள் உண்மையில் பணத்தை மிச்சப்படுத்துவீர்களா?</h3>
+        <p>உங்கள் தற்போதைய டீசல்/பெட்ரோல் இயக்கச் செலவுகளை, முன்மொழியப்பட்ட EV குழுவுடன் ஒப்பிடுகிறோம்.</p>
+      </div>
+      <div class="card">
+        <h3>நீங்கள் எப்படி மாற வேண்டும்?</h3>
+        <p>அனைத்தையும் ஒரே நேரத்தில் மாற்றுவதற்குப் பதிலாக, படிப்படியான மாற்றத்தை நாங்கள் பரிந்துரைக்கலாம்.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="wrap">
+    <div class="section-head">
+      <div class="section-eyebrow">மதிப்பீடு</div>
+      <h2>ஈவி எதை மதிப்பீடு செய்கிறது</h2>
+    </div>
+    <div class="grid grid-3">
+      <div class="card">
+        <span class="card-icon">🚚</span>
+        <h3>உங்கள் தற்போதைய வாகனக் குழு</h3>
+        <p>வாகன வகைகள், வயது, பயன்பாடு, எரிபொருள் நுகர்வு மற்றும் பராமரிப்புச் செலவுகள்.</p>
+      </div>
+      <div class="card">
+        <span class="card-icon">🛣️</span>
+        <h3>உங்கள் இயக்கங்கள்</h3>
+        <p>தினசரி தூரம், பாதைகள், பயணங்கள், சுமை, இயக்க நேரங்கள் மற்றும் டிப்போவுக்குத் திரும்பும் முறை.</p>
+      </div>
+      <div class="card">
+        <span class="card-icon">⚡</span>
+        <h3>உங்கள் சார்ஜிங் தயார்நிலை</h3>
+        <p>டிப்போ கிடைக்கும் தன்மை, பார்க்கிங் முறை, சார்ஜிங் வாய்ப்புகள் மற்றும் மின் தேவைகள்.</p>
+      </div>
+      <div class="card">
+        <span class="card-icon">💰</span>
+        <h3>உங்கள் பொருளாதாரம்</h3>
+        <p>டீசல்/பெட்ரோல் Vs EV இயக்கச் செலவுகள், நிதி/வாடகை அம்சங்கள், சேமிப்பு மற்றும் தோராயமான ஈடுசெய் காலம்.</p>
+      </div>
+      <div class="card">
+        <span class="card-icon">🔄</span>
+        <h3>உங்கள் மாற்றத் திட்டம்</h3>
+        <p>எந்த வாகனங்களை முதலில் மாற்ற வேண்டும், எவற்றைத் தக்க வைக்க வேண்டும், என்ன உள்கட்டமைப்பு தேவை என்பதை.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="section-alt">
+  <div class="wrap">
+    <div class="section-head">
+      <div class="section-eyebrow">வெளியீடு</div>
+      <h2>உங்களுக்கு என்ன கிடைக்கும்</h2>
+      <p class="section-desc">உங்கள் Eevy EV Fleet Transition Plan பின்வருவனவற்றில் தெளிவான புரிதலை அளிக்கும்:</p>
+    </div>
+
+    <div class="tiers">
+      <div class="tier tier-ready">
+        <div class="tier-dot"></div>
+        <div class="tier-label">EV-க்குத் தயார்</div>
+        <div class="tier-desc">இப்போதே மாறக்கூடிய வாகனங்கள்/பாதைகள்.</div>
+      </div>
+      <div class="tier tier-partial">
+        <div class="tier-dot"></div>
+        <div class="tier-label">மாற்றங்களுடன் தயார்</div>
+        <div class="tier-desc">சார்ஜிங் அல்லது இயக்க மாற்றங்கள் தேவைப்படும் வாகனங்கள்/பாதைகள்.</div>
+      </div>
+      <div class="tier tier-no">
+        <div class="tier-dot"></div>
+        <div class="tier-label">இன்னும் ஏற்றதாக இல்லை</div>
+        <div class="tier-desc">தற்போதைக்கு EV பொருந்தாத வாகனங்கள்/பாதைகள்.</div>
+      </div>
+    </div>
+
+    <ul class="deliverables">
+      <li>பரிந்துரைக்கப்பட்ட EV குழு</li>
+      <li>சார்ஜிங் தேவைகள்</li>
+      <li>மதிப்பிடப்பட்ட இயக்கச் செலவு வித்தியாசம்</li>
+      <li>சாத்தியமான சேமிப்பு</li>
+      <li>பரிந்துரைக்கப்பட்ட மாற்ற வரிசை</li>
+      <li>செயல்படுத்துவதற்கான அடுத்த கட்டங்கள்</li>
+    </ul>
+  </div>
+</section>
+
+<section id="modes">
+  <div class="wrap">
+    <div class="section-head">
+      <div class="section-eyebrow">தொடங்குங்கள்</div>
+      <h2>உங்கள் வாகனக் குழுவை நாங்கள் எப்படி மதிப்பீடு செய்ய வேண்டும் என்பதைத் தேர்ந்தெடுங்கள்</h2>
+    </div>
+    <div class="grid grid-2">
+      <div class="mode-card featured">
+        <div class="mode-price">₹5,000 மதிப்புள்ளது — முதல் 30 வணிகங்களுக்கு இலவசம்</div>
+        <h3>ஆன்லைன் மதிப்பீடு</h3>
+        <p>மதிப்பீட்டை ஆன்லைனில் பூர்த்தி செய்யுங்கள். ஈவி உங்கள் தகவல்களைப் பகுப்பாய்வு செய்து, பொதுவாக சில வேலை நாட்களுக்குள் உங்கள் EV Transition Plan-ஐத் தயார் செய்யும். உங்கள் நிறுவனத்தின் சார்பாக இதை நிரப்புகிறீர்களா? உங்கள் எரிபொருள், பராமரிப்பு மற்றும் வாகனப் பதிவுகளைத் தயாராக வைத்திருங்கள் — தோராயமான எண்கள் போதுமானது.</p>
+        <a class="btn-mode" href="eevy-fleet-assessment.html">இலவச மதிப்பீட்டைத் தொடங்குங்கள்</a>
+      </div>
+      <div class="mode-card plain">
+        <div class="mode-price">₹25,000 — அனைத்தும் அடங்கியது</div>
+        <h3>இடத்திற்கு வந்து மேற்கொள்ளப்படும் மதிப்பீடு</h3>
+        <p>ஈவி பிரதிநிதி ஒருவர் உங்கள் இடத்திற்கு வந்து, உங்கள் குழுவுடன் இணைந்து மதிப்பீட்டை மேற்கொள்வார். பயணம், தங்குமிடம் மற்றும் வருகைச் செலவுகள் இதில் அடங்கும். பெரிய அல்லது சிக்கலான வாகனக் குழுக்களைக் கொண்ட வணிகங்களுக்கு ஏற்றது.</p>
+        <a class="btn-mode" href="mailto:hello@eevy.in?subject=On-site%20Fleet%20Assessment%20Booking">இடத்திற்கு வரும் மதிப்பீட்டைப் பதிவு செய்யுங்கள்</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="section-alt">
+  <div class="wrap">
+    <div class="section-head">
+      <div class="section-eyebrow">பொதுவான கேள்விகள்</div>
+      <h2>தொடங்குவதற்கு முன்</h2>
+    </div>
+    <div class="faq-list">
+      <div class="faq-item">
+        <p class="faq-q">ஒவ்வொரு கேள்விக்கும் சரியான எண்கள் தேவையா?</p>
+        <p class="faq-a">இல்லை. தோராயமான எண்கள் போதுமானது, மேலும் யூகிப்பதற்குப் பதிலாக எந்தப் பதிலையும் "தெரியவில்லை" என்று குறிக்கலாம். உங்கள் திட்டம் இறுதி செய்யப்படும் முன் எஞ்சியவற்றை எங்கள் குழு தொடர்ந்து கேட்டு அறியும்.</p>
+      </div>
+      <div class="faq-item">
+        <p class="faq-q">இதைச் செய்ய GPS அல்லது டெலிமேட்டிக்ஸ் தரவு தேவையா?</p>
+        <p class="faq-a">இல்லை. இருந்தால் உதவியாக இருக்கும், ஆனால் பெரும்பாலான வணிகங்கள் நினைவிலிருந்தும், வழக்கமான எரிபொருள் மற்றும் பராமரிப்புப் பதிவுகளிலிருந்தும் மதிப்பீட்டை பூர்த்தி செய்கின்றன.</p>
+      </div>
+      <div class="faq-item">
+        <p class="faq-q">இது எங்களை EV வாங்க வைக்கும் ஒரு விற்பனை உத்தியா?</p>
+        <p class="faq-a">இல்லை. ஒரு வாகனம் அல்லது பாதை உண்மையிலேயே EV-க்குத் தயாராக இல்லையென்றால், உங்கள் திட்டம் அதை "இன்னும் ஏற்றதாக இல்லை" எனத் தெளிவாகக் கூறும் — பொருந்தாத இடங்களில் EV-ஐப் பரிந்துரைத்ததற்காக எங்களுக்குக் கூடுதல் பணம் கிடைக்காது.</p>
+      </div>
+      <div class="faq-item">
+        <p class="faq-q">ஆன்லைன் மதிப்பீடு எவ்வளவு நேரம் எடுக்கும்?</p>
+        <p class="faq-a">ஒரு சிறிய வாகனக் குழுவிற்கு சுமார் 15–20 நிமிடங்கள். ஒரே அமர்வில் முடிக்கலாம் அல்லது பின்னர் திரும்பி வந்து முடிக்கலாம்.</p>
+      </div>
+      <div class="faq-item">
+        <p class="faq-q">எனது நிறுவனத்திற்காக இதை நிரப்பச் சொல்லப்பட்டேன் — இது சரியா?</p>
+        <p class="faq-a">ஆம். பெரும்பாலான பதிவுகள் நிறுவன உரிமையாளரிடமிருந்து நேரடியாக அல்லாமல், வாகனக் குழு மேலாளர், போக்குவரத்து மேற்பார்வையாளர் அல்லது கணக்குப் பிரிவினரிடமிருந்தே வருகின்றன. உங்களுக்குத் தெரிந்ததை நிரப்பி, மற்றவற்றை "தெரியவில்லை" என்று குறிக்கவும்.</p>
+      </div>
+      <div class="faq-item">
+        <p class="faq-q">எங்கள் வாகனம் மற்றும் செலவுத் தரவு இரகசியமாக வைக்கப்படுமா?</p>
+        <p class="faq-a">ஆம். உங்கள் தகவல்கள் உங்கள் EV Transition Plan-ஐத் தயாரிக்க மட்டுமே பயன்படுத்தப்படும், மேலும் எந்த மூன்றாம் தரப்பினருடனும் பகிரப்படாது.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="section-alt">
+  <div class="wrap deploy">
+    <div class="deploy-copy">
+      <div class="deploy-tag">அறிக்கைக்கு அப்பால்</div>
+      <h2 style="margin-top:10px;">மதிப்பீட்டிலிருந்து செயல்படுத்தல் வரை</h2>
+      <p>ஈவி அறிக்கையுடன் நிற்காது. உங்கள் வணிகத்திற்கு என்ன தேவை என்பதை அறிந்தவுடன், பின்வருபவர்களுடன் இணைக்க நாங்கள் உதவலாம்:</p>
+      <ul class="deliverables" style="margin-bottom:18px;">
+        <li>உங்கள் திட்டத்தில் உள்ள வாகனங்களுக்கான EV உற்பத்தியாளர்கள் மற்றும் டீலர்கள்</li>
+        <li>சார்ஜிங் உபகரணங்கள் மற்றும் நிறுவல் பங்குதாரர்கள்</li>
+        <li>EV வாங்குவதற்கான நிதி மற்றும் லீசிங் பங்குதாரர்கள்</li>
+      </ul>
+      <p>மாற்றத்தை நீங்களே கண்டுபிடிக்க வேண்டியதில்லை.</p>
+    </div>
+  </div>
+</section>
+
+<section class="finalcta">
+  <div class="wrap">
+    <div class="eyebrow" style="text-align:center;">நீங்கள் தயாராக இருக்கும்போது</div>
+    <h2>உங்கள் வாகனக் குழு மின்சாரமாக மாற முடியுமா என்று அறிய தயாரா?</h2>
+    <p class="section-desc">உங்கள் Eevy EV Fleet Assessment-ஐப் பெறுங்கள் — ₹5,000 மதிப்புள்ளது, முதல் 30 வணிகங்களுக்கு இலவசம்.</p>
+    <div class="cta-row" style="justify-content:center;">
+      <a class="btn-primary" href="eevy-fleet-assessment.html">எனது வாகனக் குழுவை மதிப்பீடு செய்யுங்கள் →</a>
+      <a class="btn-secondary" href="https://wa.me/91XXXXXXXXXX?text=Hi%2C%20I%27d%20like%20to%20know%20more%20about%20the%20Eevy%20Fleet%20Assessment" target="_blank" rel="noopener">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"/></svg>
+        WhatsApp-ல் எங்களிடம் பேசுங்கள்
+      </a>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap">
+    <p class="footnote">வணிக வாகனங்களை இயக்கும் நிறுவனங்களுக்காக. மதிப்பீட்டுப் பரிந்துரைகள் வழங்கப்பட்ட தகவல்களின் அடிப்படையிலானவை, மேலும் இது ஒரு ஆரம்பநிலை வாகனக் குழு மாற்ற மதிப்பீடே தவிர, ஒரு பொறியியல் சான்றிதழ் அல்ல.</p>
+    <div class="copyright">© 2026 Eevy India Pvt Ltd</div>
+  </div>
+</footer>
+
+</body>
+</html>
