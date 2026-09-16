@@ -12,6 +12,18 @@
 
   <script src="https://challenges.cloudflare.com/turnstile/v0/api.js" async defer></script>
 
+  <script>
+  function reportWhatsAppConversion(url) {
+    gtag('event', 'conversion', {
+      'send_to': 'AW-18255747497/D_B3CMWJuvkcEKmzgoFE',
+      'event_callback': function () {
+        window.open(url, '_blank');
+      }
+    });
+    return false;
+  }
+  </script>
+
   <style>
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
@@ -357,6 +369,7 @@
     <a
       class="whatsapp-campaign-link"
       href="#"
+      onclick="return reportWhatsAppConversion(this.href);"
       aria-label="Contact Eevy India on WhatsApp"
     >
       <img
@@ -369,6 +382,7 @@
     <a
       class="campaign-whatsapp-btn whatsapp-campaign-link"
       href="#"
+      onclick="return reportWhatsAppConversion(this.href);"
     >
       உங்கள் மின்சார வாகனத் தேவைகளுக்கு இங்கே கிளிக் செய்து எங்களை தொடர்பு கொள்ளுங்கள்
     </a>
