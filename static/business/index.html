@@ -133,7 +133,6 @@
     .hero h1 em { font-style: normal; color: #6EDFC0; }
     .hero-sub-title {
       font-size: 1.02rem;
-      color: rgba(255,255,255,.72);
       line-height: 1.75;
       max-width: 480px;
       margin: 0 auto;
@@ -142,7 +141,6 @@
 
     .hero-sub {
       font-size: 1.02rem;
-      color: rgba(255,255,255,.72);
       line-height: 1.75;
       max-width: 480px;
       margin: 0 auto;
@@ -299,6 +297,49 @@
       display: flex;
       align-items: baseline;
     }
+
+    /* Commercial EV campaign hero */
+    .campaign-hero {
+      background: #f5f7f8;
+      padding: 20px 16px 28px;
+      text-align: center;
+    }
+
+    .campaign-hero-inner {
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+
+    .campaign-hero-image {
+      display: block;
+      width: 100%;
+      height: auto;
+      border-radius: 12px;
+      box-shadow: var(--shadow-lg);
+      cursor: pointer;
+    }
+
+    .campaign-whatsapp-btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      margin-top: 18px;
+      padding: 14px 28px;
+      border-radius: 8px;
+      background: #25D366;
+      color: white;
+      text-decoration: none;
+      font-weight: 700;
+      font-size: 1rem;
+    }
+
+    .campaign-whatsapp-btn:hover {
+      background: #1ebe5d;
+    }
+
+    .form_heading {
+      text-align: center;
+    }
   </style>
 </head>
 <body>
@@ -310,19 +351,44 @@
   </div>
 </nav>
 
+<section class="campaign-hero">
+  <div class="campaign-hero-inner">
+
+    <a
+      class="whatsapp-campaign-link"
+      href="#"
+      aria-label="Contact Eevy India on WhatsApp"
+    >
+      <img
+        src="commercial-ev-whatsapp.png"
+        alt="Commercial electric vehicle for business - contact eevy.india"
+        class="campaign-hero-image"
+      />
+    </a>
+
+    <a
+      class="campaign-whatsapp-btn whatsapp-campaign-link"
+      href="#"
+    >
+      உங்கள் மின்சார வாகனத் தேவைகளுக்கு இங்கே கிளிக் செய்து எங்களை தொடர்பு கொள்ளுங்கள்
+    </a>
+
+  </div>
+</section>
+
 <section class="hero">
   <div class="hero-inner">
     <span class="hero-badge">Coming Soon</span>
     <h1>Eevy <em>For Business</em></h1>
-    <p class="hero-sub-title" data-i18n="hero_sub_title">Are you a commercial EV dealer or manufacturer?</p> </div><br>
-    <p class="hero-sub" data-i18n="hero_sub">We're building Eevy For Business and would like to showcase your vehicles here.</p>
   </div>
 </section>
 
 <section class="form-section">
   <div class="form-card">
     <div id="form-view">
-      <h2 data-i18n="form_heading">Partner with Eevy</h2>
+      <h2 class="form_heading" data-i18n="form_heading">Partner with Eevy</h2>
+      <p class="hero-sub-title" data-i18n="hero_sub_title">Are you a commercial EV dealer or manufacturer?</p> </div><br>
+      <p class="hero-sub" data-i18n="hero_sub">We're building Eevy For Business and would like to showcase your vehicles here.</p>
       <p class="form-lead" data-i18n="form_lead">Share a few details and we'll reach out for listing on eevy.</p>
 
       <form id="business-form">
@@ -511,6 +577,25 @@
     document.getElementById('form-view').style.display = 'none';
     document.getElementById('success-view').style.display = 'block';
   });
+
+  // Commercial EV WhatsApp campaign
+const WHATSAPP_NUMBER = '917624889238';
+
+const WHATSAPP_MESSAGE =
+  'வணக்கம், எனது business-க்காக ஒரு மின்சார வாகனம் தேவை. இந்த நம்பரில் எனக்கு கால் செய்யவும்.';
+
+const whatsappUrl =
+  'https://wa.me/' +
+  WHATSAPP_NUMBER +
+  '?text=' +
+  encodeURIComponent(WHATSAPP_MESSAGE);
+
+document.querySelectorAll('.whatsapp-campaign-link').forEach(link => {
+  link.href = whatsappUrl;
+  link.target = '_blank';
+  link.rel = 'noopener';
+});
+
 </script>
 
 </body>
