@@ -363,7 +363,7 @@
   </div>
 </nav>
 
-<section class="campaign-hero">
+<!-- <section class="campaign-hero">
   <div class="campaign-hero-inner">
 
     <a
@@ -388,7 +388,7 @@
     </a>
 
   </div>
-</section>
+</section> -->
 
 <section class="hero">
   <div class="hero-inner">
@@ -543,8 +543,8 @@
 
   // ---- Supabase client (loaded async; submit handler awaits this) ----
   const supabaseReady = import('https://esm.sh/@supabase/supabase-js@2').then(({ createClient }) => {
-    const SUPABASE_URL = 'https://dvyuqhcmkrmpzrbujmxb.supabase.co';
-    const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImR2eXVxaGNta3JtcHpyYnVqbXhiIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODUxNTY1NjksImV4cCI6MjEwMDczMjU2OX0.igNHrQky4l3OADZrU52pbT_PsSKnFHzqcskdJDivnqY';
+    const SUPABASE_URL = 'https://rrcftgnsuzpirmxqapkb.supabase.co';
+    const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InJyY2Z0Z25zdXpwaXJteHFhcGtiIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODk2OTQ1OTUsImV4cCI6MjEwNTI3MDU5NX0.iGYqpPhrGnAJtJ-XDKIicpf7lsDa6osxuHk9g4Y1llk';
     return createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
   });
 
@@ -591,24 +591,6 @@
     document.getElementById('form-view').style.display = 'none';
     document.getElementById('success-view').style.display = 'block';
   });
-
-  // Commercial EV WhatsApp campaign
-const WHATSAPP_NUMBER = '917624889238';
-
-const WHATSAPP_MESSAGE =
-  'வணக்கம், எனது business-க்காக ஒரு மின்சார வாகனம் தேவை. இந்த நம்பரில் எனக்கு கால் செய்யவும்.';
-
-const whatsappUrl =
-  'https://wa.me/' +
-  WHATSAPP_NUMBER +
-  '?text=' +
-  encodeURIComponent(WHATSAPP_MESSAGE);
-
-document.querySelectorAll('.whatsapp-campaign-link').forEach(link => {
-  link.href = whatsappUrl;
-  link.target = '_blank';
-  link.rel = 'noopener';
-});
 
 </script>
 
